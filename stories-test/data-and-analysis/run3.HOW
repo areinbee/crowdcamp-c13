@@ -21,7 +21,7 @@ https://www.mturk.com/mturk/searchbar?selectedSearchType=hitgroups&requesterId=A
 ## Retrieve
 ${MTURKPY} retrieve "${HITID}" | head -2 | tee "${BASEDIR}/results-${NAME}.csv.meta"
 ${MTURKPY} retrieve "${HITID}" | tail -n +3 > "${BASEDIR}/results-${NAME}.csv"
-
+./csv_helpers.py "${BASEDIR}/results-${NAME}.csv" payload > "${BASEDIR}/results-${NAME}-payload.json"
 
 ### Analyze ###
 
