@@ -1,0 +1,78 @@
+{
+    "glossary": {
+        "title": "example glossary",
+		"GlossDiv": {
+            "title": "S",
+			"GlossList": {
+                "GlossEntry": {
+                    "ID": "SGML",
+					"SortAs": "SGML",
+					"GlossTerm": "Standard Generalized Markup Language",
+					"Acronym": "SGML",
+					"Abbrev": "ISO 8879:1986",
+					"GlossDef": {
+                        "para": "A meta-markup language, used to create markup languages such as DocBook.",
+						"GlossSeeAlso": ["GML", "XML"]
+                    },
+					"GlossSee": "markup"
+                }
+            }
+        }
+    }
+}
+
+{
+"questions": [
+	     {"q":"is it a fantasy or science fiction", 
+	      "a":"yes"},
+	     {"q": "is it a love story",
+	      "a": "no"},
+	     {"q": "does it have 3 characters",
+	      "a": "yes"},
+	     {"q": "does it have a happy ending",
+	      "a": "yes"},
+	     {"q": "is it based on real world", 
+	      "a": "yes"},
+	     {"q": "is the name of character jack",  
+	      "a": "yes"},
+	     {"q": "is jack a scientist", 
+	      "a": "yes"},
+	     {"q": "does jack want the well being of world", 
+	      "a": "yes"},
+	     {"q": "does jack invent something", 
+	      "a": "yes"}, 
+	     {"q": "does his invention gets stolen",
+	      "a": "no"},
+	     {"q": "does jack has a wife",
+	      "a": "yes"},
+	     {"q": "is jacks wife name jane", 
+	      "a": "yes"},
+	     {"q": "do they have a son",
+	      "a": "no"},
+	     {"q": "is there another evil scientist",
+	      "a": "no"},
+	     {"q": "is there fight between jack and his wife",
+	      "a": "yes"},
+	     {"q": "is there a lover of jane",
+	      "a": "no"},
+	     {"q": "does jack die in the story",
+	      "a": "yes"},
+	     {"q": "is there a villian in the story",
+	      "a": "yes"},
+	     {"q": "does the villian steal jacks invention",
+	      "a": "yes"},
+	     {"q": "does jack and villian fight",
+	      "a": "no"},
+	     {"q": "does jane and villian fight", 
+	      "a": "yes"},
+	     {"q": "did jane love villian",
+	      "a": "yes"},
+	     {"q": "did jane kill villian",
+	      "a": "no"},
+	     {"q": "did jane kill jack",
+	      "a": "no"},
+	     {"q": "how did the story end",
+	      "a": "yes"}
+	      ]
+
+}
