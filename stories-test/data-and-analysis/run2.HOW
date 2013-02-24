@@ -1,0 +1,33 @@
+## Step 0
+ln -s ../../ext/mturk-py/mturk.py
+
+MTURKPY="./mturk.py really"
+#MTURKPY=./mturk.py
+BASEDIR=run2
+
+NAME=jack_and_jane_sci
+HITID=
+NAME=jack_and_jane_sci_flip
+HITID=
+NAME=no_zombie_ill
+HITID=
+NAME=no_zombie_ill_flip
+HITID=
+
+## Submit
+${MTURKPY} submit "${BASEDIR}/mturk.json" | tee "${BASEDIR}/submit.txt"
+
+## Info
+${MTURKPY} info "${HITID}" | tee "${BASEDIR}/info.txt"
+
+## Check for Mechanical Turk jobs by my Requester ID:
+https://workersandbox.mturk.com/mturk/searchbar?selectedSearchType=hitgroups&requesterId=A15H0LB6D1DHDQ
+https://www.mturk.com/mturk/searchbar?selectedSearchType=hitgroups&requesterId=A15H0LB6D1DHDQ
+
+## Retrieve
+${MTURKPY} retrieve "${HITID}" | head -2 | tee "${BASEDIR}/results-${NAME}.csv.meta"
+${MTURKPY} retrieve "${HITID}" | tail -n +3 > "${BASEDIR}/results-${NAME}.csv"
+
+
+### Analyze ###
+
