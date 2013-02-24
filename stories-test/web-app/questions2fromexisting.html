@@ -124,7 +124,7 @@ If you do not agree with the consent form and wish not to participate in this st
 
 <h1 class="heading">Guess my story.</h1>
 
-<p class="heading h2">I have created a story.  I wonder if you can guess what it&rsquo;s about.
+<p class="heading h2" id="instructions">I have created a story.  I wonder if you can guess what it&rsquo;s about.</p>
 
 <div id="story-area">
     <div class="floating-label">The Story:</div>
@@ -141,6 +141,7 @@ If you do not agree with the consent form and wish not to participate in this st
     <form id="mturk_form" method="post" action="">
     <input type="hidden" id="assignmentId" name="assignmentId" value="" />
     <input type="hidden" id="UserAgent" name="UserAgent" value="" />
+    <input type="hidden" id="stimulus" name="stimulus" value="" />
     <input type="hidden" id="payload" name="payload" value="" />
     <input class="button" id="submitButton" type="submit" name="Submit" disabled value="You must have JavaScript to complete this HIT." />
     <!-- <input type="submit" name="the_end" value="I reached the end!"> -->
@@ -163,6 +164,7 @@ If you do not agree with the consent form and wish not to participate in this st
     /// Global variables.
     ///
     var assignmentId;
+    var stimulus;
     var theStory = [];
     
     
@@ -214,6 +216,37 @@ If you do not agree with the consent form and wish not to participate in this st
     {
         return JSON.stringify( theStory );
     }
+    function append_question_and_answer1( text, answerIsYes )
+    {
+        var history_div = $('#history');
+        
+        theStory.push( [ text, answerIsYes ] );
+        $('#payload').val( story_as_text() );
+        
+        var answer =
+            answerIsYes
+            ? '<span class="yes"> Yes!</span>'
+            : '<span class="no"> No.</span>'
+            ;
+        
+        history_div.append( $('<div></div>').append( $('<span></span>').text( text ) ).append( $(answer) ) );
+    }
+    function append_question_and_answer2( text, answerIsYes )
+    {
+        var history_div = $('#history');
+        
+        theStory.push( [ text, answerIsYes ] );
+        $('#payload').val( story_as_text() );
+        
+        var answer =
+            answerIsYes
+            ? '<span class="yes">' + text + ' Yes!</span>'
+            : '<span class="no">' + text + ' No.</span>'
+            ;
+        
+        history_div.append( $('<div></div>').append( $(answer) ) );
+    }
+    var append_question_and_answer = append_question_and_answer2;
     
     
     ///
@@ -225,7 +258,31 @@ If you do not agree with the consent form and wish not to participate in this st
     if( kDebugging ) $(".debug-container").show();
     
     $('#submitButton').val( "I reached the end." );
-    update_submit_button_following_success();
+    
+    stimulus = purl().param("stimulus");
+    if( stimulus !== undefined )
+    {
+        $('#instructions').html( "I have created a story.  I wonder if you can guess what it&rsquo;s about by asking <span class='yes'>Yes</span> or <span class='no'>No</span> questions.  Someone already started guessing.  Please continue." );
+        
+        $('#stimulus').val( stimulus );
+        $.getJSON(
+            'json/' + stimulus,
+            function( data )
+            {
+                for( var i = 0; i < data.questions.length; ++i )
+                {
+                    append_question_and_answer( data.questions[i].q, data.questions[i].a === 'yes' );
+                }
+            
+                update_submit_button_following_success();
+            }
+            );
+    }
+    else
+    {
+        update_submit_button_following_success();
+    }
+    
     
     //
     // From the Jquery plugin - http://projects.allmarkedup.com/jquery_url_parser/
@@ -250,23 +307,11 @@ If you do not agree with the consent form and wish not to participate in this st
     
     $('#ask-button').click( function() {
         
-        var history_div = $('#history');
-        
         var q = $('#question');
         var text = q.val();
-        
         var answerIsYes = random() < .5;
         
-        theStory.push( [ text, answerIsYes ] );
-        $('#payload').val( story_as_text() );
-        
-        var answer =
-            answerIsYes
-            ? '<span class="yes"> Yes!</span>'
-            : '<span class="no"> No.</span>'
-            ;
-        
-        history_div.append( $('<div></div>').append( $('<span></span>').text( text ) ).append( $(answer) ) );
+        append_question_and_answer( text, answerIsYes );
         
         // Clear the question.
         q.val('');
