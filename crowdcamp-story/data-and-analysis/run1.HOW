@@ -5,7 +5,7 @@ MTURKPY="./mturk.py really"
 #MTURKPY=./mturk.py
 BASEDIR=run1
 
-HITID=
+HITID=2OV1X3V0FK0GTY76TUD7YKK9L1QMF6
 
 ## Submit
 ${MTURKPY} submit "${BASEDIR}/mturk.json" | tee "${BASEDIR}/submit.txt"

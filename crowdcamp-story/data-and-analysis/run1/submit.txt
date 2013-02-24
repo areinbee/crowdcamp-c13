@@ -1,0 +1,2 @@
+[MTurkConnection( mechanicalturk.amazonaws.com )]
+[create_hit( http://storyoracle.appspot.com/, $0.2 ): 2OV1X3V0FK0GTY76TUD7YKK9L1QMF6]
