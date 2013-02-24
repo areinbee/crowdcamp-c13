@@ -124,7 +124,7 @@ If you do not agree with the consent form and wish not to participate in this st
 
 <h1 class="heading">Guess my story.</h1>
 
-<p class="heading h2" id="instructions">I have created a story.  I wonder if you can guess what it&rsquo;s about.</p>
+<p class="heading h2" id="instructions">I have created a story.  I wonder if you can guess what it&rsquo;s about by asking only <span class='yes'>Yes</span> or <span class='no'>No</span> questions.</p>
 
 <div id="story-area">
     <div class="floating-label">The Story:</div>
@@ -165,7 +165,7 @@ If you do not agree with the consent form and wish not to participate in this st
     ///
     var assignmentId;
     var stimulus;
-    var theStory = [];
+    var theStory = { 'questions': [] };
     
     
     ///
@@ -220,7 +220,7 @@ If you do not agree with the consent form and wish not to participate in this st
     {
         var history_div = $('#history');
         
-        theStory.push( [ text, answerIsYes ] );
+        theStory.questions.push( { 'q': text, 'a': answerIsYes } );
         $('#payload').val( story_as_text() );
         
         var answer =
@@ -235,7 +235,7 @@ If you do not agree with the consent form and wish not to participate in this st
     {
         var history_div = $('#history');
         
-        theStory.push( [ text, answerIsYes ] );
+        theStory.questions.push( { 'q': text, 'a': answerIsYes } );
         $('#payload').val( story_as_text() );
         
         var answer =
@@ -262,7 +262,7 @@ If you do not agree with the consent form and wish not to participate in this st
     stimulus = purl().param("stimulus");
     if( stimulus !== undefined )
     {
-        $('#instructions').html( "I have created a story.  I wonder if you can guess what it&rsquo;s about by asking <span class='yes'>Yes</span> or <span class='no'>No</span> questions.  Someone already started guessing.  Please continue." );
+        $('#instructions').html( "I have created a story.  I wonder if you can guess what it&rsquo;s about by asking only <span class='yes'>Yes</span> or <span class='no'>No</span> questions.  Someone already started guessing.  Please continue." );
         
         $('#stimulus').val( stimulus );
         $.getJSON(
@@ -271,7 +271,7 @@ If you do not agree with the consent form and wish not to participate in this st
             {
                 for( var i = 0; i < data.questions.length; ++i )
                 {
-                    append_question_and_answer( data.questions[i].q, data.questions[i].a === 'yes' );
+                    append_question_and_answer( data.questions[i].q, data.questions[i].a );
                 }
             
                 update_submit_button_following_success();
@@ -311,7 +311,10 @@ If you do not agree with the consent form and wish not to participate in this st
         var text = q.val();
         var answerIsYes = random() < .5;
         
-        append_question_and_answer( text, answerIsYes );
+        if( $.trim(text) !== '' )
+        {
+            append_question_and_answer( text, answerIsYes );
+        }
         
         // Clear the question.
         q.val('');

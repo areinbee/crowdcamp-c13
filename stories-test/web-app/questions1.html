@@ -124,7 +124,7 @@ If you do not agree with the consent form and wish not to participate in this st
 
 <h1 class="heading">Guess my story.</h1>
 
-<p class="heading h2">I have created a story.  I wonder if you can guess what it&rsquo;s about.
+<p class="heading h2">I have created a story.  I wonder if you can guess what it&rsquo;s about by asking only <span class='yes'>Yes</span> or <span class='no'>No</span> questions.</p>
 
 <div id="story-area">
     <div class="floating-label">The Story:</div>
@@ -163,7 +163,7 @@ If you do not agree with the consent form and wish not to participate in this st
     /// Global variables.
     ///
     var assignmentId;
-    var theStory = [];
+    var theStory = { 'questions': [] };
     
     
     ///
@@ -255,18 +255,23 @@ If you do not agree with the consent form and wish not to participate in this st
         var q = $('#question');
         var text = q.val();
         
-        var answerIsYes = random() < .5;
+        // TODO: Check if text equals a simple "yes" or "no" and reinforce instructions.
         
-        theStory.push( [ text, answerIsYes ] );
-        $('#payload').val( story_as_text() );
-        
-        var answer =
-            answerIsYes
-            ? '<span class="yes"> Yes!</span>'
-            : '<span class="no"> No.</span>'
-            ;
-        
-        history_div.append( $('<div></div>').append( $('<span></span>').text( text ) ).append( $(answer) ) );
+        if( $.trim(text) !== '' )
+        {
+            var answerIsYes = random() < .5;
+            
+            theStory.questions.push( { 'q': text, 'a': answerIsYes } );
+            $('#payload').val( story_as_text() );
+            
+            var answer =
+                answerIsYes
+                ? '<span class="yes"> Yes!</span>'
+                : '<span class="no"> No.</span>'
+                ;
+            
+            history_div.append( $('<div></div>').append( $('<span></span>').text( text ) ).append( $(answer) ) );
+        }
         
         // Clear the question.
         q.val('');
