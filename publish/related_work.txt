@@ -1,0 +1,4 @@
+Fit and Diverse- Set Evolution for Inspiring 3D Shape Galleries (Xu et al. 2012 SIGGRAPH)
+
+work on evolutionary algorithms from florida that focus on diverse searches whose name escapes me
+
