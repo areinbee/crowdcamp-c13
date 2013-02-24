@@ -13,10 +13,21 @@ indexes:
 - kind: Question
   properties:
   - name: story
+  - name: __key__
+    direction: desc
+
+- kind: Question
+  properties:
+  - name: story
   - name: q_id
 
 - kind: Question
   properties:
   - name: story
   - name: q_id
+    direction: desc
+
+- kind: Story
+  properties:
+  - name: __key__
     direction: desc
