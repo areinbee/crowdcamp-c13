@@ -62,6 +62,11 @@ body
     line-height: 1.5em;
 }
 
+#question
+{
+    width: 80%;
+}
+
 div.irb
 {
     font-size: 10px;
@@ -240,8 +245,8 @@ If you do not agree with the consent form and wish not to participate in this st
         
         var answer =
             answerIsYes
-            ? '<span class="yes">' + text + ' Yes!</span>'
-            : '<span class="no">' + text + ' No.</span>'
+            ? '<span class="yes">' + text + ' <strong>Yes!</strong></span>'
+            : '<span class="no">' + text + ' <strong>No.</strong></span>'
             ;
         
         history_div.append( $('<div></div>').append( $(answer) ) );
@@ -262,7 +267,7 @@ If you do not agree with the consent form and wish not to participate in this st
     stimulus = purl().param("stimulus");
     if( stimulus !== undefined )
     {
-        $('#instructions').html( "I have created a story.  I wonder if you can guess what it&rsquo;s about by asking only <span class='yes'>Yes</span> or <span class='no'>No</span> questions.  Someone already started guessing.  Please continue." );
+        $('#instructions').html( "I have created a story.  I wonder if you can guess what it&rsquo;s about by asking only <strong><span class='yes'>Yes</span></strong> or <strong><span class='no'>No</span></strong> questions.  Someone already started guessing.  Please continue asking only <strong><span class='yes'>Yes</span></strong> or <strong><span class='no'>No</span></strong> questions." );
         
         $('#stimulus').val( stimulus );
         $.getJSON(
