@@ -13,7 +13,7 @@
 	     {"q": "is the name of character jack",  
 	      "a": true},
 	     {"q": "is jack a scientist", 
-	      "a": false},
+	      "a": false}
 	      ]
 
 }
