@@ -67,6 +67,16 @@ body
     width: 80%;
 }
 
+#feedback-area
+{
+    display: none;
+}
+#feedback
+{
+    width: 80%;
+    height: 5em;
+}
+
 div.irb
 {
     font-size: 10px;
@@ -138,7 +148,7 @@ If you do not agree with the consent form and wish not to participate in this st
     
     <form id="history-form" action="" onSubmit="return false;">
     <input type="text" id="question" name="question" value="" placeholder="Question" autofocus>
-    <input class="button" type="submit" id="ask-button" name="query_question" disabled value="Ask">
+    <input class="enable-on-success-button" type="submit" id="ask-button" name="query_question" disabled value="Ask">
     </form>
 </div>
 
@@ -148,8 +158,12 @@ If you do not agree with the consent form and wish not to participate in this st
     <input type="hidden" id="UserAgent" name="UserAgent" value="" />
     <input type="hidden" id="stimulus" name="stimulus" value="" />
     <input type="hidden" id="payload" name="payload" value="" />
-    <input class="button" id="submitButton" type="submit" name="Submit" disabled value="You must have JavaScript to complete this HIT." />
-    <!-- <input type="submit" name="the_end" value="I reached the end!"> -->
+    <div id="feedback-area">
+        Great, you did it!<br />
+        How was this experience? Leave us feedback (optional):
+        <textarea id="feedback" name="feedback" placeholder="Feedback"></textarea>
+    </div>
+    <input class="enable-on-success-button" id="submitButton" type="submit" name="Submit" disabled value="You must have JavaScript to complete this HIT." />
     </form>
 </div>
 
@@ -171,6 +185,7 @@ If you do not agree with the consent form and wish not to participate in this st
     var assignmentId;
     var stimulus;
     var theStory = { 'questions': [] };
+    var feedbackVisible = false;
     
     
     ///
@@ -187,12 +202,12 @@ If you do not agree with the consent form and wish not to participate in this st
         if( assignmentId === "ASSIGNMENT_ID_NOT_AVAILABLE" )
         {
             // If we're previewing, disable the button and give it a helpful message
-            $('.button').prop( "disabled", true );
+            $('.enable-on-success-button').prop( "disabled", true );
             submitButton.val( "You must ACCEPT the HIT before you can ask any question." );
         }
         else
         {
-            $('.button').prop( "disabled", false );
+            $('.enable-on-success-button').prop( "disabled", false );
             // submitButton.val( "Submit" );
         }
         
@@ -207,7 +222,7 @@ If you do not agree with the consent form and wish not to participate in this st
     {
         // Check if the worker is PREVIEWING the HIT or if they've ACCEPTED the HIT
         var submitButton = $('#submitButton');
-        $('.button').prop( "disabled", true );
+        $('.enable-on-success-button').prop( "disabled", true );
         submitButton.val( "Something has gone wrong internally.  I apologize for the inconvenience." );
         
         // If we're not previewing the HIT, enable the tag fields.
@@ -323,6 +338,18 @@ If you do not agree with the consent form and wish not to participate in this st
         
         // Clear the question.
         q.val('');
+        } );
+    
+    $('#mturk_form').submit( function() {
+        if( feedbackVisible ) return true;
+        
+        $('#history-form').hide();
+        $('#feedback-area').show();
+        $('#feedback').focus();
+        $('#submitButton').val( 'Submit' );
+        feedbackVisible = true;
+        
+        return false;
         } );
     
     });
