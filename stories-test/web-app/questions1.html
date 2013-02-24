@@ -26,11 +26,35 @@ body
     color: #a00;
 }
 
-#history
+#story-area
 {
     border: 1px solid #000;
-    margin: 5px 0 5px 0;
+    margin: 25px 0 5px 0;
     padding: 5px;
+}
+.floating-label
+{
+    position: relative;
+    top: -20px;
+    left: 10px;
+    /* font-size: 20px; */
+    height: 20px;
+    line-height: 20px;
+    /* text-align: center; */
+    /* width: 100px; */
+    float: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: -20px;
+    
+    background: #fff;
+    border: 1px solid #000;
+}
+.clearfix
+{
+    clear: both;
+    visibility: hidden;
+    height: 0;
 }
 
 div.irb
@@ -98,23 +122,24 @@ If you do not agree with the consent form and wish not to participate in this st
 <p class="heading h2">I have created a story.  I wonder if you can guess what it&rsquo;s about.
 
 <div id="story-area">
-    <div id="history">
-    </div>
-    <div id="form-holder">
-        <form id="history-form" action="">
-        <input type="text" id="question" name="question" value="" placeholder="Question" autofocus required>
-        <input class="button" type="button" id="ask-button" name="query_question" disabled value="Ask">
-        </form>
-        
-        <form id="mturk_form" action="post">
-        <input type="hidden" id="assignmentId" name="assignmentId" value="" />
-        <input type="hidden" id="UserAgent" name="UserAgent" value="" />
-        <!-- <input type="hidden" id="payload" name="payload" value="" /> -->
-        <input class="button" id="submitButton" type="submit" name="Submit" disabled value="You must have JavaScript to complete this HIT." />
-        <!-- <input type="submit" name="the_end" value="I reached the end!"> -->
-        </form>
-        
-    </div>
+    <div class="floating-label">The Story:</div>
+    <div class="clearfix"></div>
+    <div id="history"></div>
+    
+    <form id="history-form" action="" onSubmit="return false;">
+    <input type="text" id="question" name="question" value="" placeholder="Question" autofocus>
+    <input class="button" type="submit" id="ask-button" name="query_question" disabled value="Ask">
+    </form>
+</div>
+
+<div id="form-holder">
+    <form id="mturk_form" action="post">
+    <input type="hidden" id="assignmentId" name="assignmentId" value="" />
+    <input type="hidden" id="UserAgent" name="UserAgent" value="" />
+    <input type="hidden" id="payload" name="payload" value="" />
+    <input class="button" id="submitButton" type="submit" name="Submit" disabled value="You must have JavaScript to complete this HIT." />
+    <!-- <input type="submit" name="the_end" value="I reached the end!"> -->
+    </form>
 </div>
 
 <script type='text/javascript'>
@@ -125,8 +150,7 @@ If you do not agree with the consent form and wish not to participate in this st
     ///
     /// Constants.
     ///
-    var kSomething = 1;
-    
+    // var kSomething = 1;
     var kDebugging = false;
     
     
@@ -134,6 +158,7 @@ If you do not agree with the consent form and wish not to participate in this st
     /// Global variables.
     ///
     var assignmentId;
+    var theStory = [];
     
     
     ///
@@ -180,6 +205,10 @@ If you do not agree with the consent form and wish not to participate in this st
             $('div.irb').hide();
         }
     }
+    function story_as_text()
+    {
+        return JSON.stringify( theStory );
+    }
     
     
     ///
@@ -217,7 +246,6 @@ If you do not agree with the consent form and wish not to participate in this st
     // Let's store the UserAgent for analyzing later (so we know what level of browser adoption we can expect).
     $( "#UserAgent" ).val( navigator.userAgent );
     
-    
     $('#ask-button').click( function() {
         
         var history_div = $('#history');
@@ -225,8 +253,13 @@ If you do not agree with the consent form and wish not to participate in this st
         var q = $('#question');
         var text = q.val();
         
+        var answerIsYes = random() < .5;
+        
+        theStory.push( [ text, answerIsYes ] );
+        $('#payload').val( story_as_text() );
+        
         var answer =
-            random() < .5
+            answerIsYes
             ? '<span class="yes"> Yes!</span>'
             : '<span class="no"> No.</span>'
             ;
