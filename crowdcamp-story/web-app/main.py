@@ -153,11 +153,11 @@ class StoryHandler(webapp2.RequestHandler):
             <form action="%s/mturk/externalSubmit" method="post">
                 <div>
                 <h1>How was this experience? Leave us feedback (optional)</h1>
-                <textarea rows="5" cols="50" autofocus></textarea>
+                <textarea name="feedback" rows="5" cols="50" autofocus></textarea>
                 </div>
                 <br />
                 <input type="hidden" name="assignmentId" value="%s" />
-                <div><input type="submit" value="Submit"></div>
+                <div><input type="submit" name="submit" value="Submit"></div>
             </form>""" 
             % (formAction, assignmentId))
 
@@ -182,16 +182,18 @@ class AllStoriesHandler(webapp2.RequestHandler):
 class AnswerQuestion(webapp2.RequestHandler):
     def post(self):
         story_id = self.request.get('story_id')
-        q = Question()
-        q.question = self.request.get('question')
-        q.story = Story.get(story_id)
-        q.q_id = int(self.request.get('question_id'))
-        if random.random() < .5:
-            q.answer = "yes"
-        else:
-            q.answer = "no"
-            
-        q.put()
+
+        if self.request.get('question') != "":
+            q = Question()
+            q.question = self.request.get('question')
+            q.story = Story.get(story_id)
+            q.q_id = int(self.request.get('question_id'))
+            if random.random() < .5:
+                q.answer = "yes"
+            else:
+                q.answer = "no"
+                
+            q.put()
 
         self.redirect('/editstory/%s?%s' % (story_id, self.request.query_string))
 
