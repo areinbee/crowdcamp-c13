@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    
+    <title>Guess my story.</title>
+    
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script> -->
+    <script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="js/purl.js" type="text/javascript"></script>
+    
+    <script src="js/AleaMash.js" type="text/javascript"></script>
+    
+<style type="text/css">
+body
+{
+    font-family: verdana, sans-serif;
+}
+
+.yes
+{
+    color: #0a0;
+}
+.no
+{
+    color: #a00;
+}
+
+#history
+{
+    border: 1px solid #000;
+    margin: 5px 0 5px 0;
+    padding: 5px;
+}
+
+div.irb
+{
+    font-size: 10px;
+    font-family: verdana, sans-serif;
+    background: #ffe;
+    width: 500px;
+    
+    display: none;
+}
+div.irb a
+{
+    color: #000;
+}
+div.irb p
+{
+    padding-top: 3px;
+    margin-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+div.nonirb
+{
+    position: relative;
+}
+</style>
+
+</head>
+<body>
+
+<div class="irb">
+<p>Designing Micro-Tasks for Computer Graphics Applications and Crowdsourced Creativity
+
+<p>INFORMED CONSENT FORM
+
+<p>RESEARCH PROCEDURES:
+This research is being conducted to design micro-tasks for computer graphics applications and study crowdsourced creativity. If you agree to participate, you will be asked to complete the HIT shown below.
+
+<p>RISKS:
+There are no foreseeable risks for participating in this research.
+
+<p>BENEFITS:
+There are no benefits to you as a participant other than to further research in computer graphics.
+
+<p>CONFIDENTIALITY:
+This research is anonymous. (1) Your name will not be included on the surveys and other collected data; (2) a code unrelated to your Worker ID will be placed on the survey and other collected data; (3) through the use of an identification key, the researcher will be able to link your survey to your Amazon Worker ID; and (4) only the researcher will have access to the identification key.
+
+<p>PARTICIPATION:
+Your participation is voluntary, and you may withdraw from the study at any time and for any reason. If you decide not to participate or if you withdraw from the study, there is no penalty or loss of benefits to which you are otherwise entitled. There are no costs to you or any other party. You will be paid the advertised amount for your completion of the HITs.
+
+<p>CONTACT:
+This research is being conducted by Yotam Gingold from the Department of Computer Science at George Mason University. He may be reached at 703-993-9196 or <a href="mailto:ygingold@cs.gmu.edu">ygingold@cs.gmu.edu</a> for questions or to report a research-related problem. You may contact the George Mason University Office of Research Integrity &amp; Assurance at 703-993-4121 if you have questions or comments regarding your rights as a participant in the research. This research has been reviewed according to George Mason University procedures governing your participation in this research.
+
+<p>CONSENT:
+By accepting this HIT, you acknowledge that you have read this form and agree to participate in this study.
+If you do not agree with the consent form and wish not to participate in this study, please skip this HIT.
+</div>
+
+<div class="nonirb">
+
+<h1 class="heading">Guess my story.</h1>
+
+<p class="heading h2">I have created a story.  I wonder if you can guess what it&rsquo;s about.
+
+<div id="story-area">
+    <div id="history">
+    </div>
+    <div id="form-holder">
+        <form id="history-form" action="">
+        <input type="text" id="question" name="question" value="" placeholder="Question" autofocus required>
+        <input class="button" type="button" id="ask-button" name="query_question" disabled value="Ask">
+        </form>
+        
+        <form id="mturk_form" action="post">
+        <input type="hidden" id="assignmentId" name="assignmentId" value="" />
+        <input type="hidden" id="UserAgent" name="UserAgent" value="" />
+        <!-- <input type="hidden" id="payload" name="payload" value="" /> -->
+        <input class="button" id="submitButton" type="submit" name="Submit" disabled value="You must have JavaScript to complete this HIT." />
+        <!-- <input type="submit" name="the_end" value="I reached the end!"> -->
+        </form>
+        
+    </div>
+</div>
+
+<script type='text/javascript'>
+    /*<![CDATA[*/
+    (function() {
+    "use strict";
+    
+    ///
+    /// Constants.
+    ///
+    var kSomething = 1;
+    
+    var kDebugging = false;
+    
+    
+    ///
+    /// Global variables.
+    ///
+    var assignmentId;
+    
+    
+    ///
+    /// Global functions.
+    ///
+    // Better randomness:
+    // var random = Math.random;
+    var random = Alea();
+    
+    function update_submit_button_following_success()
+    {
+        // Check if the worker is PREVIEWING the HIT or if they've ACCEPTED the HIT
+        var submitButton = $('#submitButton');
+        if( assignmentId === "ASSIGNMENT_ID_NOT_AVAILABLE" )
+        {
+            // If we're previewing, disable the button and give it a helpful message
+            $('.button').prop( "disabled", true );
+            submitButton.val( "You must ACCEPT the HIT before you can ask any question." );
+        }
+        else
+        {
+            $('.button').prop( "disabled", false );
+            // submitButton.val( "Submit" );
+        }
+        
+        // If we're not previewing the HIT, enable the tag fields.
+        // If we're not previewing the HIT, hide the IRB assent.
+        if( assignmentId === "ASSIGNMENT_ID_NOT_AVAILABLE" )
+        {
+            $('div.irb').show();
+        }
+    }
+    function update_submit_button_following_failure()
+    {
+        // Check if the worker is PREVIEWING the HIT or if they've ACCEPTED the HIT
+        var submitButton = $('#submitButton');
+        $('.button').prop( "disabled", true );
+        submitButton.val( "Something has gone wrong internally.  I apologize for the inconvenience." );
+        
+        // If we're not previewing the HIT, enable the tag fields.
+        // If we're not previewing the HIT, hide the IRB assent.
+        if( assignmentId !== "ASSIGNMENT_ID_NOT_AVAILABLE" )
+        {
+            $('div.irb').hide();
+        }
+    }
+    
+    
+    ///
+    /// Initialization.
+    ///
+    
+    $(document).ready( function() {
+    
+    if( kDebugging ) $(".debug-container").show();
+    
+    $('#submitButton').val( "I reached the end." );
+    update_submit_button_following_success();
+    
+    //
+    // From the Jquery plugin - http://projects.allmarkedup.com/jquery_url_parser/
+    //
+    assignmentId = purl().param("assignmentId");
+    $('#assignmentId').val( assignmentId );
+    
+    // Pass the payload back to the caller in case it's used as a job identifier.
+    // $( "#payload" ).val( purl().param("payload") );
+    
+    
+    // Tested: The sandbox and the non-sandbox Mechanical Turk both
+    // provide a "turkSubmitTo" parameter when a HIT has been "accepted".
+    // They do not provide a "turkSubmitTo" in preview mode, though.
+    var submitTo = purl().param('turkSubmitTo');
+    if( submitTo !== undefined )
+    {
+        submitTo = decodeURIComponent( submitTo );
+        $('#mturk_form').prop( 'action', submitTo + '/mturk/externalSubmit' );
+    }
+    
+    
+    // Let's store the UserAgent for analyzing later (so we know what level of browser adoption we can expect).
+    $( "#UserAgent" ).val( navigator.userAgent );
+    
+    
+    $('#ask-button').click( function() {
+        
+        var history_div = $('#history');
+        
+        var q = $('#question');
+        var text = q.val();
+        
+        var answer =
+            random() < .5
+            ? '<span class="yes"> Yes!</span>'
+            : '<span class="no"> No.</span>'
+            ;
+        
+        history_div.append( $('<div></div>').append( $('<span></span>').text( text ) ).append( $(answer) ) );
+        
+        // Clear the question.
+        q.val('');
+        } );
+    
+    });
+    })();
+    /*]]>*/
+</script>
+</body>
+</html>
