@@ -5,7 +5,10 @@ MTURKPY="./mturk.py really"
 #MTURKPY=./mturk.py
 BASEDIR=run1
 
-HITID=
+NAME=jack_and_jane
+HITID=2T46IAA2SEIYZ85N3JBKJ4IISILNND
+NAME=no_zombie
+HITID=26XE4EGDHDM6AZD5OGQWFHEZ6Y8BLB
 
 ## Submit
 ${MTURKPY} submit "${BASEDIR}/mturk.json" | tee "${BASEDIR}/submit.txt"
@@ -18,8 +21,8 @@ https://workersandbox.mturk.com/mturk/searchbar?selectedSearchType=hitgroups&req
 https://www.mturk.com/mturk/searchbar?selectedSearchType=hitgroups&requesterId=A15H0LB6D1DHDQ
 
 ## Retrieve
-${MTURKPY} retrieve "${HITID}" | head -2 | tee "${BASEDIR}/results.csv.meta"
-${MTURKPY} retrieve "${HITID}" | tail -n +3 > "${BASEDIR}/results.csv"
+${MTURKPY} retrieve "${HITID}" | head -2 | tee "${BASEDIR}/results-${NAME}.csv.meta"
+${MTURKPY} retrieve "${HITID}" | tail -n +3 > "${BASEDIR}/results-${NAME}.csv"
 
 
 ### Analyze ###
