@@ -25,8 +25,8 @@ def create_mturk( sandbox = True ):
     ## http://readthedocs.org/docs/boto/en/latest/boto_config_tut.html
     
     mturk = boto.mturk.connection.MTurkConnection(
-        #aws_access_key_id = '...',
-        #aws_secret_access_key = '...',
+        aws_access_key_id = 'AKIAJ3IYMKBP255FPAIQ',
+        aws_secret_access_key = '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',
         
         host = host,
         
