@@ -8,8 +8,8 @@ from boto.mturk.qualification import Qualifications, PercentAssignmentsApprovedR
  
 HOST = 'mechanicalturk.sandbox.amazonaws.com'
  
-#mtc = MTurkConnection(host=HOST)
-mtc = MTurkConnection()
+mtc = MTurkConnection(host=HOST)
+#mtc = MTurkConnection()
  
 title = 'Help us design a mobile application to transform how people\'s experience with food'
 description = ('In this HIT you will help us explore ideas for how mobile technology might transform our food experience.')
@@ -23,7 +23,7 @@ qualifications.add(LocaleRequirement('EqualTo', 'US'))
  
 #---------------  BUILD QUESTION 1 -------------------
  
-q1 = ExternalQuestion("http://kgajos.eecs.harvard.edu:8888/externalHits/propose2.php?reqs=r5", 600)
+q1 = ExternalQuestion("http://kgajos.eecs.harvard.edu/crowdcamp/eval/eval.php", 600)
  
  
 
