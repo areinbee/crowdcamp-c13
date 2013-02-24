@@ -1,0 +1,3 @@
+[MTurkConnection( mechanicalturk.amazonaws.com )]
+[create_hit( http://hcomp.yotamgingold.com/questions2fromexisting/questions2fromexisting.html?stimulus=jack_and_jane.json, $0.2 ): 2T46IAA2SEIYZ85N3JBKJ4IISILNND]
+[create_hit( http://hcomp.yotamgingold.com/questions2fromexisting/questions2fromexisting.html?stimulus=no_zombie.json, $0.2 ): 26XE4EGDHDM6AZD5OGQWFHEZ6Y8BLB]

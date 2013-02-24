@@ -1,0 +1,20 @@
+{
+    "create_hit_kwargs": {
+        "title": "Guess my story.",
+        "description": "I've got a story in mind for you. Ask Yes/No questions to find out what the story is about!",
+        "keywords": [ "text, story, creative, fun, creativity, writing" ],
+        
+        "frame_height": 800,
+        
+        "amount": 0.20,
+        "max_assignments": 25,
+        
+        "duration": 900,
+        "lifetime": 604800,
+        "approval_delay": 0
+        },
+    "URLs": [
+        "http://hcomp.yotamgingold.com/questions2fromexisting/questions2fromexisting.html?stimulus=jack_and_jane.json",
+        "http://hcomp.yotamgingold.com/questions2fromexisting/questions2fromexisting.html?stimulus=no_zombie.json"
+         ]
+}

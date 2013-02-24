@@ -1,0 +1,4 @@
+scp -r web-app yg:hcomp.yotamgingold.com/questions2fromexisting
+ssh yg
+cd hcomp.yotamgingold.com
+mv web-app questions2fromexisting
