@@ -1,0 +1,20 @@
+{
+"questions":[
+	{"q": "Are there zombies?",
+	 "a": false},
+	{"q": "Does anyone die?",
+	 "a": false},
+	{"q": "is it an uplifting story?",
+	 "a": false},
+	{"q": "does it take place in a forest?",
+	 "a": false},
+	{"q": "are there mythical creatures?",
+	 "a": false},
+	{"q": "is magic involved?",
+	 "a": false},
+	{"q": "is it a true story?",
+	 "a": true},
+	{"q": "is it about anything illegal?",
+	 "a": false}
+     ]
+}

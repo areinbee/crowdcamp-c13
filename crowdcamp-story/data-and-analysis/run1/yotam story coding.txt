@@ -1,0 +1,65 @@
+Q: Identify important questions.
+
+same:
+Q: Identify questions with a lot of dependencies.
+Q: Identify questions that had a big effect on the later questions.
+
+Q: Which questions, if the answers had been different, would lead to a very different story?
+
+Q: Summarize the story by removing unimportant questions.
+
+---
+
+Another Story
+(1) is it a fantasy or science fiction yes
+(2) is it a love story no
+*(3) does it have 3 characters yes
+(4) does it have a happy ending yes
+(5) is it based on real world yes
+(6) is the name of character jack yes
+*(7) is jack a scientist yes
+(8) does jack want the well being of world yes
+*(9) does jack invent something yes
+(10) does his invention gets stolen no
+*(11) does jack has a wife yes
+(12) is jacks wife name jane yes
+(13) do they have a son no
+(14) is there another evil scientist no
+*(15) is there fight between jack and his wife yes
+(16) is there a lover of jane no
+*(17) does jack die in the story yes
+*(18) does jane die in the story yes
+*(19) is there a villian in the story yes
+*(20) does the villian steal jacks invention yes
+(21) does jack and villian fight no
+*(22) does jane and villian fight yes
+*(23) did jane love villian yes
+(24) did jane kill villian no
+(25) did jane kill jack no
+(26) how did the story end yes
+
+---
+
+Another Story
++(1) Are there zombies? no
+(2) Does anyone die? no
+*(3) is it an uplifting story? no
++(4) does it take place in a forest? no
++(5) are there mythical creatures? no
++(6) is magic involved? no
+*(7) is it a true story? yes
+*(8) is it about anything illegal? yes
+*(9) is it about drugs? yes
+*(10) is it about drug addiction? no
+*(11) is it about a party? yes
+(12) is it about doing drugs at a party? no
+*(13) are the cops involved? no
+*(14) does anyone overdose yes
+*(15) does someone save a life yes
+(16) is someone taken to the hospital no
+(17) is there a rave no
+*(18) is it heroin yes
+(19) are there dirty needles everywhere no
+*(20) are the a lot of people doing heroin yes
+*(21) is it an orgy yes
+*(22) is it about overdosing on heroin at an orgy no

@@ -1,0 +1,4 @@
+[MTurkConnection( mechanicalturk.amazonaws.com )]
+HITId,HITTypeId,CreationTime,Title,Description,Keywords,HITStatus,Reward,LifetimeInSeconds,AssignmentDurationInSeconds,MaxAssignments,AutoApprovalDelayInSeconds,ExternalURL,FrameHeight,RequesterAnnotation,NumberOfSimilarHITs,HITReviewStatus,NumberofAssignmentsPending,NumberofAssignmentsAvailable,NumberofAssignmentsCompleted
+2NAVQ8H88MQYBZABQO3IARXX4KC8RZ,2JC1LY58B72BREN3UD8DA6YFSVVT8A,2013-02-24T21:20:16Z,Guess my story.,I've got a story in mind for you. Ask Yes/No questions to find out what the story is about!,"text, story, creative, fun, creativity, writing",Assignable,$0.20,,900,10,0,http://hcomp.yotamgingold.com/questions2fromexisting/questions2fromexisting.html?stimulus=no_zombie_ill.json,800,,,NotReviewed,,,
+

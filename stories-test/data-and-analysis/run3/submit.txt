@@ -1,0 +1,2 @@
+[MTurkConnection( mechanicalturk.amazonaws.com )]
+[create_hit( http://hcomp.yotamgingold.com/questions2fromexisting/questions3poster.html, $0.2 ): 2XGQ4J3NAB6FK0K23RPI21TJFNAER4]

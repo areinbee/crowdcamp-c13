@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     
-    <title>Guess my story.</title>
+    <title>Guess my poster design.</title>
     
     <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script> -->
     <script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
@@ -60,6 +60,21 @@ body
 #history
 {
     line-height: 1.5em;
+}
+
+#question
+{
+    width: 80%;
+}
+
+#feedback-area
+{
+    display: none;
+}
+#feedback
+{
+    width: 80%;
+    height: 5em;
 }
 
 div.irb
@@ -122,18 +137,19 @@ If you do not agree with the consent form and wish not to participate in this st
 
 <div class="nonirb">
 
-<h1 class="heading">Guess my story.</h1>
+<h1 class="heading">Guess my poster design.</h1>
 
-<p class="heading h2">I have created a story.  I wonder if you can guess what it&rsquo;s about by asking only <span class='yes'>Yes</span> or <span class='no'>No</span> questions.</p>
+<p class="heading h2" id="instructions">I have created a poster.  I wonder if you can guess what it looks like by asking only <span class='yes'>Yes</span> or <span class='no'>No</span> questions.</p>
+<p class="heading h2" >The poster is about a conference for scientists who study climate change.</p>
 
 <div id="story-area">
-    <div class="floating-label">The Story:</div>
+    <div class="floating-label">The Poster:</div>
     <div class="clearfix"></div>
     <div id="history"></div>
     
     <form id="history-form" action="" onSubmit="return false;">
-    <input type="text" id="question" name="question" value="" placeholder="Question" autofocus>
-    <input class="button" type="submit" id="ask-button" name="query_question" disabled value="Ask">
+    <input type="text" id="question" name="question" value="" placeholder="YES or NO question" autofocus>
+    <input class="enable-on-success-button" type="submit" id="ask-button" name="query_question" disabled value="Ask">
     </form>
 </div>
 
@@ -141,9 +157,14 @@ If you do not agree with the consent form and wish not to participate in this st
     <form id="mturk_form" method="post" action="">
     <input type="hidden" id="assignmentId" name="assignmentId" value="" />
     <input type="hidden" id="UserAgent" name="UserAgent" value="" />
+    <input type="hidden" id="stimulus" name="stimulus" value="" />
     <input type="hidden" id="payload" name="payload" value="" />
-    <input class="button" id="submitButton" type="submit" name="Submit" disabled value="You must have JavaScript to complete this HIT." />
-    <!-- <input type="submit" name="the_end" value="I reached the end!"> -->
+    <div id="feedback-area">
+        Great, you did it!<br />
+        How was this experience? Leave us feedback (optional):
+        <textarea id="feedback" name="feedback" placeholder="Feedback"></textarea>
+    </div>
+    <input class="enable-on-success-button" id="submitButton" type="submit" name="Submit" disabled value="You must have JavaScript to complete this HIT." />
     </form>
 </div>
 
@@ -163,7 +184,9 @@ If you do not agree with the consent form and wish not to participate in this st
     /// Global variables.
     ///
     var assignmentId;
+    var stimulus;
     var theStory = { 'questions': [] };
+    var feedbackVisible = false;
     
     
     ///
@@ -180,12 +203,12 @@ If you do not agree with the consent form and wish not to participate in this st
         if( assignmentId === "ASSIGNMENT_ID_NOT_AVAILABLE" )
         {
             // If we're previewing, disable the button and give it a helpful message
-            $('.button').prop( "disabled", true );
+            $('.enable-on-success-button').prop( "disabled", true );
             submitButton.val( "You must ACCEPT the HIT before you can ask any question." );
         }
         else
         {
-            $('.button').prop( "disabled", false );
+            $('.enable-on-success-button').prop( "disabled", false );
             // submitButton.val( "Submit" );
         }
         
@@ -200,7 +223,7 @@ If you do not agree with the consent form and wish not to participate in this st
     {
         // Check if the worker is PREVIEWING the HIT or if they've ACCEPTED the HIT
         var submitButton = $('#submitButton');
-        $('.button').prop( "disabled", true );
+        $('.enable-on-success-button').prop( "disabled", true );
         submitButton.val( "Something has gone wrong internally.  I apologize for the inconvenience." );
         
         // If we're not previewing the HIT, enable the tag fields.
@@ -214,6 +237,37 @@ If you do not agree with the consent form and wish not to participate in this st
     {
         return JSON.stringify( theStory );
     }
+    function append_question_and_answer1( text, answerIsYes )
+    {
+        var history_div = $('#history');
+        
+        theStory.questions.push( { 'q': text, 'a': answerIsYes } );
+        $('#payload').val( story_as_text() );
+        
+        var answer =
+            answerIsYes
+            ? '<span class="yes"> Yes!</span>'
+            : '<span class="no"> No.</span>'
+            ;
+        
+        history_div.append( $('<div></div>').append( $('<span></span>').text( text ) ).append( $(answer) ) );
+    }
+    function append_question_and_answer2( text, answerIsYes )
+    {
+        var history_div = $('#history');
+        
+        theStory.questions.push( { 'q': text, 'a': answerIsYes } );
+        $('#payload').val( story_as_text() );
+        
+        var answer =
+            answerIsYes
+            ? '<span class="yes">' + text + ' <strong>Yes!</strong></span>'
+            : '<span class="no">' + text + ' <strong>No.</strong></span>'
+            ;
+        
+        history_div.append( $('<div></div>').append( $(answer) ) );
+    }
+    var append_question_and_answer = append_question_and_answer2;
     
     
     ///
@@ -225,7 +279,31 @@ If you do not agree with the consent form and wish not to participate in this st
     if( kDebugging ) $(".debug-container").show();
     
     $('#submitButton').val( "I reached the end." );
-    update_submit_button_following_success();
+    
+    stimulus = purl().param("stimulus");
+    if( stimulus !== undefined )
+    {
+        $('#instructions').html( "I have created a poster.  I wonder if you can guess what it looks like by asking only <span class='yes'>Yes</span> or <span class='no'>No</span> questions.  Someone already started guessing.  Please continue asking only <strong><span class='yes'>Yes</span></strong> or <strong><span class='no'>No</span></strong> questions." );
+        
+        $('#stimulus').val( stimulus );
+        $.getJSON(
+            'json/' + stimulus,
+            function( data )
+            {
+                for( var i = 0; i < data.questions.length; ++i )
+                {
+                    append_question_and_answer( data.questions[i].q, data.questions[i].a );
+                }
+            
+                update_submit_button_following_success();
+            }
+            );
+    }
+    else
+    {
+        update_submit_button_following_success();
+    }
+    
     
     //
     // From the Jquery plugin - http://projects.allmarkedup.com/jquery_url_parser/
@@ -250,31 +328,29 @@ If you do not agree with the consent form and wish not to participate in this st
     
     $('#ask-button').click( function() {
         
-        var history_div = $('#history');
-        
         var q = $('#question');
         var text = q.val();
-        
-        // TODO: Check if text equals a simple "yes" or "no" and reinforce instructions.
+        var answerIsYes = random() < .5;
         
         if( $.trim(text) !== '' )
         {
-            var answerIsYes = random() < .5;
-            
-            theStory.questions.push( { 'q': text, 'a': answerIsYes } );
-            $('#payload').val( story_as_text() );
-            
-            var answer =
-                answerIsYes
-                ? '<span class="yes"> Yes!</span>'
-                : '<span class="no"> No.</span>'
-                ;
-            
-            history_div.append( $('<div></div>').append( $('<span></span>').text( text ) ).append( $(answer) ) );
+            append_question_and_answer( text, answerIsYes );
         }
         
         // Clear the question.
         q.val('');
+        } );
+    
+    $('#mturk_form').submit( function() {
+        if( feedbackVisible ) return true;
+        
+        $('#history-form').hide();
+        $('#feedback-area').show();
+        $('#feedback').focus();
+        $('#submitButton').val( 'Submit' );
+        feedbackVisible = true;
+        
+        return false;
         } );
     
     });

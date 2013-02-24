@@ -1,0 +1,5 @@
+[MTurkConnection( mechanicalturk.amazonaws.com )]
+[create_hit( http://hcomp.yotamgingold.com/questions2fromexisting/questions2fromexisting.html?stimulus=jack_and_jane_sci.json, $0.2 ): 20N1Y7QEOZF2V66Z7MDOOXRDSECHEA]
+[create_hit( http://hcomp.yotamgingold.com/questions2fromexisting/questions2fromexisting.html?stimulus=jack_and_jane_sci_flip.json, $0.2 ): 2E2NQY2RCJKA8D01IAI0TUIAQJCT4P]
+[create_hit( http://hcomp.yotamgingold.com/questions2fromexisting/questions2fromexisting.html?stimulus=no_zombie_ill.json, $0.2 ): 2NAVQ8H88MQYBZABQO3IARXX4KC8RZ]
+[create_hit( http://hcomp.yotamgingold.com/questions2fromexisting/questions2fromexisting.html?stimulus=no_zombie_ill_flip.json, $0.2 ): 27WOZFYQS1CWY0T2CK4SDIC1E87MJ9]

@@ -1,0 +1,19 @@
+{
+    "create_hit_kwargs": {
+        "title": "Guess my poster design.",
+        "description": "I have created a poster.  I wonder if you can guess what it looks like by asking only YES or NO questions.",
+        "keywords": [ "text, poster, creative, fun, creativity, design, graphics, layout" ],
+        
+        "frame_height": 800,
+        
+        "amount": 0.20,
+        "max_assignments": 10,
+        
+        "duration": 900,
+        "lifetime": 604800,
+        "approval_delay": 0
+        },
+    "URLs": [
+        "http://hcomp.yotamgingold.com/questions2fromexisting/questions3poster.html"
+         ]
+}
