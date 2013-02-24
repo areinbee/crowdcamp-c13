@@ -31,6 +31,52 @@ final_story = "<h1>Great, you're done! Here is the summary of facts in your stor
 all_stories = "<h1>All stories</h1>"
 question_count = 20
 
+
+story_domain_1 = {
+    "main_prompt": "I've got a story for you. Ask YES/NO questions to find out more!",
+    "elements": ["Characters", "Setting", "Conflict", "Resolution"],
+    "yes_count" : 7,
+    "new_element_prompt": "Now ask about:"
+    }
+    
+story_domain_2 = {
+    "main_prompt": "Help me design a movie poster for Batman. Ask me YES/NO questions about the design.",
+    "elements": ["Theme", "Layout", "Images", "Text"],
+    "yes_count" : 7,
+    "new_element_prompt": "Now let's think about: "
+    }
+    
+story_domain_3 = {
+    "main_prompt": "Help me design a movie poster for Titanic. Ask me YES/NO questions about the design.",
+    "elements": ["Theme", "Layout", "Images", "Text"],
+    "yes_count" : 7,
+    "new_element_prompt": "Now let's think about: "
+    }
+    
+story_domain_4 = {
+    "main_prompt": "Help me design a movie poster. I've got a specific movie in mind. Ask me YES/NO questions to find out more!",
+    "elements": ["Theme", "Layout", "Images", "Text"],
+    "yes_count" : 1,
+    "new_element_prompt" : "Now let's think about: "
+    }
+    
+story_domain_5 = {
+    "main_prompt": "I've got a story for you. Ask YES/NO questions to find out more!",
+    "elements": ["Once upon a time", "every day", "but one day", "because of that", "because of that", "until, finally", "and ever since then"],
+    "yes_count" : 3,
+    "new_element_prompt": " >> "
+    }
+
+story_domain_6 = {
+    "main_prompt": "Help me design a movie poster. I've got a specific movie in mind. Ask me YES/NO questions to find out more!",
+    "elements": ["Design", "Audience", "Message", "Purpose"],
+    "yes_count" : 7,
+    "new_element_prompt" : "Now let's think about: "    
+    }
+    
+domains = [story_domain_1, story_domain_2, story_domain_3, story_domain_4, story_domain_5, story_domain_6]
+    
+
 div_irb = """
 <div class="irb">
 <p>Designing Micro-Tasks for Computer Graphics Applications and Crowdsourced Creativity
@@ -63,6 +109,9 @@ If you do not agree with the consent form and wish not to participate in this st
 
 class Story(db.Model):
     user = db.StringProperty()
+    curr_element_id = db.IntegerProperty()
+    yes_count = db.IntegerProperty()
+    domain_id = db.IntegerProperty()
 
 class Question(db.Model):
     question = db.StringProperty()
@@ -70,20 +119,30 @@ class Question(db.Model):
     user = db.StringProperty()
     story = db.ReferenceProperty(Story)
     q_id = db.IntegerProperty()
+    element = db.StringProperty()
     
     def display(self, response):
-        logging.info(self.q_id)
-        if self.q_id is None:   
-            response.out.write('<h2 class="%s">%s <span class="answer">%s</span></h2>' % (self.answer, self.question, self.answer) )
-        else:
-            response.out.write('<h2 class="%s">(%d) %s <span class="answer">%s</span></h2>' % (self.answer, self.q_id, self.question, self.answer) )
-
+        prefix = ""
+        if self.element is not None:
+            prefix = "<i>[%s]</i> " % self.element
+        elif self.q_id is not None:
+            prefix = "(%d)" % self.q_id         
+   
+   
+        response.out.write('<h2 class="%s">%s %s <span class="answer">%s</span></h2>' % (self.answer, prefix, self.question, self.answer) )
+        
+        
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         s = Story()
         s.user = self.request.get('user')
+        s.yes_count = 0
+        s.curr_element_id = 0
+        if self.request.get('domainId') is not None :
+            s.domain_id = int(self.request.get('domainId'))
         s.put()
         self.redirect('/editstory/%s?%s' % (s.key(), self.request.query_string))
+        
        
     
 class EditStoryHandler(webapp2.RequestHandler):
@@ -95,22 +154,38 @@ class EditStoryHandler(webapp2.RequestHandler):
         if self.request.get('assignmentId') == "ASSIGNMENT_ID_NOT_AVAILABLE":
             self.response.out.write(div_irb)
         
+        domainId=0;
+        if self.request.get('domainId') is not None :
+            domainId = int(self.request.get('domainId'))
+            
+        prompt = "<h1>%s</h1>" % domains[domainId]["main_prompt"]
         self.response.out.write(prompt)
 
         questions = Question.all()
-        questions.filter("story =", Story.get(story_id))
+        s = Story.get(story_id)
+        
+        num_elements = len(domains[s.domain_id]['elements'])
+        logging.info("len of elements %d" % len(domains[s.domain_id]['elements']))
+        if s.curr_element_id >= len(domains[s.domain_id]['elements']):
+            self.redirect('/story/%s?%s' % (story_id, self.request.query_string))
+        
+        questions.filter("story =", s)
         questions.order('q_id')
         for question in questions:
             question.display(self.response)
-    
+             
+        curr_element = domains[int(s.domain_id)]['elements'][int(s.curr_element_id)]
+                
         questions_remaining = question_count - questions.count()
         question_id = questions.count() + 1
+        
+        self.response.out.write("<h1>Type your YES/NO question about <i>%s</i>:</h1>"%curr_element)
         
         if self.request.get('assignmentId') == "ASSIGNMENT_ID_NOT_AVAILABLE":
             self.response.out.write("""
                 <form action="/answer_q" method="post">
                     <div>
-                    <h1>Type your YES/NO question:</h1>
+                    
                     <input type="text" name="question" size="90"></input>
                     </div>
                     <br />
@@ -121,7 +196,6 @@ class EditStoryHandler(webapp2.RequestHandler):
             self.response.out.write("""
                 <form action="/answer_q?%s" method="post">
                     <div>
-                    <h1>Type your YES/NO question:</h1>
                     <input type="text" name="question" size="90" autofocus></input>
                     </div>
                     <br />
@@ -188,15 +262,26 @@ class AnswerQuestion(webapp2.RequestHandler):
             q.question = self.request.get('question')
             q.story = Story.get(story_id)
             q.q_id = int(self.request.get('question_id'))
+            q.element = domains[q.story.domain_id]['elements'][q.story.curr_element_id]
             if random.random() < .5:
                 q.answer = "yes"
+                q.story.yes_count+=1
+                if q.story.yes_count > domains[q.story.domain_id]['yes_count']:
+                    q.story.curr_element_id += 1
+                    q.story.yes_count = 0
+                q.story.put()
             else:
                 q.answer = "no"
                 
             q.put()
+            
+            if q.story.curr_element_id >= len(domains[q.story.domain_id]['elements']):
+                self.redirect('/story/%s?%s' % (story_id, self.request.query_string))
 
         self.redirect('/editstory/%s?%s' % (story_id, self.request.query_string))
 
+
+        
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/editstory/([^/]+)', EditStoryHandler),
