@@ -137,5 +137,9 @@ echo $itemsToEval[$minItem]['html'];
 <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
+<form action="https://workersandbox.mturk.com/mturk/externalSubmit" method="POST">
+<button type="submit" class="btn btn-primary">Complete the HIT</button>
+</form>
+
 </body>
 </html>
