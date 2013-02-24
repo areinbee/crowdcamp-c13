@@ -1,0 +1,19 @@
+{
+"questions": [
+	     {"q":"is it a fantasy or science fiction", 
+	      "a":true},
+	     {"q": "is it a love story",
+	      "a": false},
+	     {"q": "does it have 3 characters",
+	      "a": true},
+	     {"q": "does it have a happy ending",
+	      "a": true},
+	     {"q": "is it based on real world", 
+	      "a": true},
+	     {"q": "is the name of character jack",  
+	      "a": true},
+	     {"q": "is jack a scientist", 
+	      "a": false},
+	      ]
+
+}
