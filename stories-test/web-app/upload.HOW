@@ -1,3 +1,2 @@
 ## Quick and dirty:
 scp -r * yg:hcomp.yotamgingold.com/questions2fromexisting/
-ssh yg
