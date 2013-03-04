@@ -1,0 +1,44 @@
+== Instructions ==
+
+Content of your post:
+1. The title of your post should be: 
+CrowdCamp Report: (name/mission of your group)
+2. You should have an image.
+3. Aim for 2-3 paragraphs, state the goal of your group and highlight the output.  
+4. Include the names of all of your group members.
+
+---
+
+CrowdCamp Report: Exploring a Creative Design Space with a Crowd of Non-Experts
+CrowdCamp Report: Generating Creativity with the Crowd
+CrowdCamp Report: Crowdsourcing Creativity
+CrowdCamp Report: StoryOracle: Crowd-Generated Creativity
+
+For an unconstrained design problem like writing a fiction story or designing a poster,
+can a crowd of non-experts be shepherded to generate a diverse collection of high quality ideas?  Can the crowd also generate the actual stories or posters?
+With the goal of building crowd-powered creativity support tools, a group of us,
+Paul André http://www.cs.cmu.edu/~pandre/,
+Kanya (Pao) Siangliulue,
+Kathleen Tuite http://homes.cs.washington.edu/~ktuite/,
+Robin N. Brewer http://userpages.umbc.edu/~brewer3/,
+Krzysztof Gajos http://www.eecs.harvard.edu/~kgajos/,
+Yotam Gingold http://cs.gmu.edu/~ygingold/,
+Kurt Luther http://www.kurtluther.com/,
+set out to answer these questions.
+We based our approach on a technique described by Keith Johnstone in his book "Impro: Storytelling and the Theatre" for extracting creativity from people who believe themselves to be uncreative. An uncreative person is told that a story is already prepared and he or she has merely to guess it via yes or no questions.  Unbeknown to the guesser, there is no story; guesses are met with a yes or no response, essentially randomly.  For example:
+(1) Is it about CSCW? Yes
+(2) Is it about crowdcamp? No
+(3) Is it about a bitter rivalry? Yes
+(4) ...
+As questioning proceeds, a consistent story is revealed.
+
+[photo of cover of "Impro: Storytelling and the Theatre"]
+
+To evaluate the potential of this "StoryOracle" approach,
+we ran a series of experiments on Amazon Mechanical Turk:
+(1) We extracted dozens of surprising and creative stories and poster designs using the technique.
+(2) We generated variations on well-liked stories by showing part of the questions to a new participant and instructing them to continue guessing.
+(3) We converted question-based stories into "normal" stories.
+(4) We evaluated stories' quality.
+(5) We devised domain-specific prompts for questioners, such as the setting, theme, and characters in a story.
+Taken together, in the two days of CrowdCamp we managed to build the foundation for a crowd-powered tool to explore a creative design space, in an undirected or directed manner, and generate a variety of high quality artifacts.
