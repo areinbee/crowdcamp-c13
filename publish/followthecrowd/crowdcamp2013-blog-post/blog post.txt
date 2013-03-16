@@ -9,36 +9,45 @@ CrowdCamp Report: (name/mission of your group)
 
 ---
 
+** CrowdCamp Report: StoryOracle: Crowd-Generated Creativity
+* CrowdCamp Report: Crowd-Generated Creativity
+* CrowdCamp Report: DesignOracle: Crowd-Generated Creativity
+* CrowdCamp Report: DesignOracle: Exploring a Creative Design Space with a Crowd of Non-Experts
 CrowdCamp Report: Exploring a Creative Design Space with a Crowd of Non-Experts
 CrowdCamp Report: Generating Creativity with the Crowd
 CrowdCamp Report: Crowdsourcing Creativity
-CrowdCamp Report: StoryOracle: Crowd-Generated Creativity
 
 For an unconstrained design problem like writing a fiction story or designing a poster,
 can a crowd of non-experts be shepherded to generate a diverse collection of high quality ideas?  Can the crowd also generate the actual stories or posters?
 With the goal of building crowd-powered creativity support tools, a group of us,
 Paul André http://www.cs.cmu.edu/~pandre/,
-Kanya (Pao) Siangliulue,
+Pao Siangliulue,
 Kathleen Tuite http://homes.cs.washington.edu/~ktuite/,
-Robin N. Brewer http://userpages.umbc.edu/~brewer3/,
+Robin N. Brewer http://robinbrewer.com/,
 Krzysztof Gajos http://www.eecs.harvard.edu/~kgajos/,
 Yotam Gingold http://cs.gmu.edu/~ygingold/,
 Kurt Luther http://www.kurtluther.com/,
 set out to answer these questions.
 We based our approach on a technique described by Keith Johnstone in his book "Impro: Storytelling and the Theatre" for extracting creativity from people who believe themselves to be uncreative. An uncreative person is told that a story is already prepared and he or she has merely to guess it via yes or no questions.  Unbeknown to the guesser, there is no story; guesses are met with a yes or no response, essentially randomly.  For example:
 (1) Is it about CSCW? Yes
-(2) Is it about crowdcamp? No
+(2) Is it about CrowdCamp? No
 (3) Is it about a bitter rivalry? Yes
 (4) ...
-As questioning proceeds, a consistent story is revealed.
-
-[photo of cover of "Impro: Storytelling and the Theatre"]
+As questioning proceeds, a consistent story is revealed, entirely due to the guesser generating and then externalizing an internally consistent mental model of a story (or poster, etc.) that justifies the given answers.
 
 To evaluate the potential of this "StoryOracle" approach,
 we ran a series of experiments on Amazon Mechanical Turk:
 (1) We extracted dozens of surprising and creative stories and poster designs using the technique.
-(2) We generated variations on well-liked stories by showing part of the questions to a new participant and instructing them to continue guessing.
-(3) We converted question-based stories into "normal" stories.
+(2) We explored the design space in a directed manner by generating variations on well-liked stories.  Every question and yes or no answer provides a possible branch-point.  To branch, we selected an important ``pivot'' question and showed all questions and answers up to the pivot, followed by the pivot question and the *opposite* answer, to a set of new participants with instructions to continue guessing the story.  For example:
+[branching.001.png]
+(3) We converted question-based stories into "normal" stories.  For example:
+>>>
+Jack is a scientist who has dedicated his life to discovering how to generate energy using fusion power because he believes it would benefit humanity. Eventually he discovers how to do it and tells his wife, Jane, the good news. Jane is not aware that this is a secret and talk about it with Carl (to whom she was in love before meeting Jack). Carl tries to steal the secret from Jack but Jane fought with him and is able to impede him. 
+
+However, Jack discovers that Jane told Carl about the secret and they have a fight because of it. Eventually, Carl, who is angry with both of them, decides to kill Jack and Jane. He manages to kill the couple but when he is about to steal Jack's secret, the power fusion discovery is released to the public through the internet. 
+
+Thus, all the world is able to produce energy using Jack's discovery and eventually his dream of providing a better quality of life to everyone comes true.
+<<<
 (4) We evaluated stories' quality.
 (5) We devised domain-specific prompts for questioners, such as the setting, theme, and characters in a story.
 Taken together, in the two days of CrowdCamp we managed to build the foundation for a crowd-powered tool to explore a creative design space, in an undirected or directed manner, and generate a variety of high quality artifacts.
