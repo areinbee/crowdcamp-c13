@@ -5,6 +5,7 @@ MTURKPY="./mturk.py really"
 #MTURKPY=./mturk.py
 BASEDIR=run4-questions4
 
+## After it's been submitted:
 HITID=$(grep create_hit "${BASEDIR}/submit.txt" | sed -E 's/.*: ([A-Z0-9]*)\]/\1/')
 
 ## Submit
