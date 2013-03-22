@@ -207,6 +207,10 @@ If you do not agree with the consent form and wish not to participate in this st
     }
     // Class constants.
     // NOTE: We can't allow the user to get to the "check mark" stage with too few questions to place check marks next to, or they will never be allowed to submit.
+    // TODO Q: Require one more question than required checkboxes?
+    // A1: Yes.  The last question can't be checked because there are no following questions.
+    // A2: No.  It may still be an "important" question, and I may change the phrasing to not mention later questions.
+    // Story.prototype.kMinimumQuestionsToSubmit = Math.max( 1, kMinimumCheckMarks+1 );
     Story.prototype.kMinimumQuestionsToSubmit = Math.max( 1, kMinimumCheckMarks );
     Story.prototype.kMaximumNoAnswersInARow = 2;
     Story.prototype.kFractionYesAnswers = .7;
@@ -446,6 +450,10 @@ If you do not agree with the consent form and wish not to participate in this st
             
             $('#influential_questions').val( JSON.stringify( ids ) );
             } );
+        // TODO Q: Remove the last question's checkbox?
+        // A1: Yes.  It can't be influential because there are no following questions.
+        // A2: No.  It may still be an "important" question, and I may change the phrasing to not mention later questions.
+        // $('#history input').filter(':last').remove();
         $('#history input').show();
         
         // Show the feedback area.
