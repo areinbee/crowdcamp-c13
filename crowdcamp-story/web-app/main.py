@@ -33,42 +33,42 @@ question_count = 20
 
 
 story_domain_1 = {
-    "main_prompt": "I've got a story for you. Ask YES/NO questions to find out more!",
+    "main_prompt": "I've got a story for you. Ask questions to find out more! The questions MUST be ones that can be answered with a YES or NO. Don't worry if an answer doesn't appear, just press Enter again. ",
     "elements": ["Characters", "Setting", "Conflict", "Resolution"],
     "yes_count" : 7,
     "new_element_prompt": "Now ask about:"
     }
     
 story_domain_2 = {
-    "main_prompt": "Help me design a movie poster for Batman. Ask me YES/NO questions about the design.",
+    "main_prompt": "Help me design a movie poster for Batman. Ask questions about the design to find out more! The questions MUST be ones that can be answered with a YES or NO. Don't worry if an answer doesn't appear, just press Enter again.",
     "elements": ["Theme", "Layout", "Images", "Text"],
     "yes_count" : 7,
     "new_element_prompt": "Now let's think about: "
     }
     
 story_domain_3 = {
-    "main_prompt": "Help me design a movie poster for Titanic. Ask me YES/NO questions about the design.",
+    "main_prompt": "Help me design a movie poster for Titanic. Ask questions about the design to find out more! The questions MUST be ones that can be answered with a YES or NO. Don't worry if an answer doesn't appear, just press Enter again.",
     "elements": ["Theme", "Layout", "Images", "Text"],
     "yes_count" : 7,
     "new_element_prompt": "Now let's think about: "
     }
     
 story_domain_4 = {
-    "main_prompt": "Help me design a movie poster. I've got a specific movie in mind. Ask me YES/NO questions to find out more!",
+    "main_prompt": "Help me design a movie poster. I've got a specific movie in mind. Ask questions to find out more! The questions MUST be ones that can be answered with a YES or NO. Don't worry if an answer doesn't appear, just press Enter again.",
     "elements": ["Theme", "Layout", "Images", "Text"],
     "yes_count" : 1,
     "new_element_prompt" : "Now let's think about: "
     }
     
 story_domain_5 = {
-    "main_prompt": "I've got a story for you. Ask YES/NO questions to find out more!",
+    "main_prompt": "I've got a story for you. Ask questions to find out more! The questions MUST be ones that can be answered with a YES or NO. Don't worry if an answer doesn't appear, just press Enter again.",
     "elements": ["Once upon a time", "every day", "but one day", "because of that", "because of that", "until, finally", "and ever since then"],
     "yes_count" : 3,
     "new_element_prompt": " >> "
     }
 
 story_domain_6 = {
-    "main_prompt": "Help me design a movie poster. I've got a specific movie in mind. Ask me YES/NO questions to find out more!",
+    "main_prompt": "Help me design a movie poster. I've got a specific movie in mind. Ask questions to find out more! The questions MUST be ones that can be answered with a YES or NO. Don't worry if an answer doesn't appear, just press Enter again.",
     "elements": ["Design", "Audience", "Message", "Purpose"],
     "yes_count" : 7,
     "new_element_prompt" : "Now let's think about: "    
