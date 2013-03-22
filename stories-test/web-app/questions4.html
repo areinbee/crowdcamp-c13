@@ -26,6 +26,16 @@ body
     color: #a00;
 }
 
+.checkmark-instructions
+{
+    font-weight: bold;
+}
+.feedback-instructions
+{
+    font-size: 80%;
+    color: #555;
+}
+
 #story-area
 {
     border: 1px solid #000;
@@ -61,6 +71,10 @@ body
 {
     line-height: 1.5em;
 }
+#history input
+{
+    display: none;
+}
 
 #question
 {
@@ -70,6 +84,7 @@ body
 #feedback-area
 {
     display: none;
+    line-height: 150%;
 }
 #feedback
 {
@@ -153,14 +168,16 @@ If you do not agree with the consent form and wish not to participate in this st
 </div>
 
 <div id="form-holder">
-    <form id="mturk_form" method="post" action="">
+    <form id="mturk_form" method="post" action="request.php">
     <input type="hidden" id="assignmentId" name="assignmentId" value="" />
     <input type="hidden" id="UserAgent" name="UserAgent" value="" />
     <input type="hidden" id="stimulus" name="stimulus" value="" />
     <input type="hidden" id="payload" name="payload" value="" />
+    <input type="hidden" id="influential_questions" name="influential_questions" value="" />
     <div id="feedback-area">
         Great, you did it!<br />
-        How was this experience? Leave us feedback (optional):
+        <span class="checkmark-instructions">Please place check marks next to questions that had a big impact on later questions.</span>  Place at least <span id="kMinimumCheckMarks"></span> check marks.<br />
+        <span class="feedback-instructions">How was this experience? Leave us feedback (optional):</span>
         <textarea id="feedback" name="feedback" placeholder="Feedback"></textarea>
     </div>
     <input class="enable-on-success-button" id="submitButton" type="submit" name="Submit" disabled value="You must have JavaScript to complete this HIT." />
@@ -176,6 +193,7 @@ If you do not agree with the consent form and wish not to participate in this st
     /// Constants.
     ///
     var kDebugging = false;
+    var kMinimumCheckMarks = 2;
     
     ///
     /// "Classes"
@@ -188,7 +206,8 @@ If you do not agree with the consent form and wish not to participate in this st
         this.numberOfNoAnswersInARow = 0;
     }
     // Class constants.
-    Story.prototype.kMinimumQuestionsToSubmit = 1;
+    // NOTE: We can't allow the user to get to the "check mark" stage with too few questions to place check marks next to, or they will never be allowed to submit.
+    Story.prototype.kMinimumQuestionsToSubmit = Math.max( 1, kMinimumCheckMarks );
     Story.prototype.kMaximumNoAnswersInARow = 2;
     Story.prototype.kFractionYesAnswers = .7;
     // Class methods.
@@ -218,13 +237,17 @@ If you do not agree with the consent form and wish not to participate in this st
         
         var history_div = $('#history');
         
+        var qnum = this.theStory.questions.length;
         this.theStory.questions.push( { 'q': text, 'a': answerIsYes } );
         $('#payload').val( this.story_as_text() );
         
+        var kPrefix = '<input type="checkbox" id="influential' + qnum + '" name="influential" value="' + qnum + '"><label for="influential' + qnum + '">';
+        var kSuffix = '</label>';
+        
         var answer =
             answerIsYes
-            ? '<span class="yes">' + text + ' <strong>Yes!</strong></span>'
-            : '<span class="no">' + text + ' <strong>No.</strong></span>'
+            ? kPrefix + '<span class="yes">' + text + ' <strong>Yes!</strong></span>' + kSuffix
+            : kPrefix + '<span class="no">' + text + ' <strong>No.</strong></span>' + kSuffix
             ;
     
         history_div.append( $('<div></div>').append( $(answer) ) );
@@ -263,7 +286,6 @@ If you do not agree with the consent form and wish not to participate in this st
     ///
     var assignmentId;
     var stimulus;
-    var feedbackVisible = false;
     var theStory = new Story();
     
     ///
@@ -321,6 +343,8 @@ If you do not agree with the consent form and wish not to participate in this st
     if( kDebugging ) $(".debug-container").show();
     
     $('#submitButton').val( "I reached the end." );
+    
+    $('#kMinimumCheckMarks').text( kMinimumCheckMarks );
     
     stimulus = purl().param("stimulus");
     if( stimulus !== undefined )
@@ -385,7 +409,7 @@ If you do not agree with the consent form and wish not to participate in this st
         // Warn the user if they type simply "yes" or "no".
         if( text.toLowerCase() === "yes" || text.toLowerCase() === "yes?" || text.toLowerCase() === "no" || text.toLowerCase() === "no?" )
         {
-            alert( 'Ask questions that can be answered with a "yes" or "no".' );
+            alert( 'Please ask questions that can be answered with "yes" or "no".' );
             return;
         }
         
@@ -398,21 +422,45 @@ If you do not agree with the consent form and wish not to participate in this st
         theStory.append_question_and_answer( text, answerIsYes );
         } );
     
-    $('#mturk_form').submit( function() {
-        if( feedbackVisible ) return true;
-        
+    $('#mturk_form').on( 'submit', function() {
         if( theStory.goodQuestionsAsked < theStory.kMinimumQuestionsToSubmit )
         {
             alert( "Are you sure you've reached the end?" );
+            $('#question').focus();
             return false;
         }
         
+        // Remove this function from the form and prepare the next one.
+        $('#mturk_form').off( 'submit' );
+        
+        // Prepare the DOM that asks users to check off the most important questions.
         $('#history-form').hide();
+        
+        // TODO: Create a bunch of check buttons.
+        $('#history input').prop( 'checked', false );
+        $('#history input').change( function() {
+            var checked = $('#history input:checked');
+            $('#submitButton').prop( 'disabled', checked.length < kMinimumCheckMarks );
+            
+            var ids = [];
+            checked.each( function() { ids.push( parseInt( this.id.replace( 'influential', '' ) ) ) } );
+            
+            $('#influential_questions').val( JSON.stringify( ids ) );
+            } );
+        $('#history input').show();
+        
+        // Show the feedback area.
         $('#feedback-area').show();
         $('#feedback').focus();
-        $('#submitButton').val( 'Submit' );
-        feedbackVisible = true;
         
+        // The submit button actually submits.
+        $('#submitButton').val( 'Submit' );
+        $('#submitButton').prop( 'disabled', true );
+        
+        // We don't need a next form submit handler; we're ready to submit.
+        // $('#mturk_form').on( 'submit', function() { return true; } );
+        
+        // We setup the next stage, so don't actually submit.
         return false;
         } );
     
