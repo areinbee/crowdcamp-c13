@@ -342,6 +342,26 @@ If you do not agree with the consent form and wish not to participate in this st
     
     if( kDebugging ) $(".debug-container").show();
     
+    //
+    // From the Jquery plugin - http://projects.allmarkedup.com/jquery_url_parser/
+    //
+    assignmentId = purl().param("assignmentId");
+    $('#assignmentId').val( assignmentId );
+    
+    // Tested: The sandbox and the non-sandbox Mechanical Turk both
+    // provide a "turkSubmitTo" parameter when a HIT has been "accepted".
+    // They do not provide a "turkSubmitTo" in preview mode, though.
+    var submitTo = purl().param('turkSubmitTo');
+    if( submitTo !== undefined )
+    {
+        submitTo = decodeURIComponent( submitTo );
+        $('#mturk_form').prop( 'action', submitTo + '/mturk/externalSubmit' );
+    }
+    
+    // Let's store the UserAgent for analyzing later (so we know what level of browser adoption we can expect).
+    $( "#UserAgent" ).val( navigator.userAgent );
+    
+    
     $('#submitButton').val( "I reached the end." );
     
     $('#kMinimumCheckMarks').text( kMinimumCheckMarks );
@@ -370,27 +390,6 @@ If you do not agree with the consent form and wish not to participate in this st
         update_submit_button_following_success();
     }
     
-    
-    //
-    // From the Jquery plugin - http://projects.allmarkedup.com/jquery_url_parser/
-    //
-    assignmentId = purl().param("assignmentId");
-    $('#assignmentId').val( assignmentId );
-    
-    
-    // Tested: The sandbox and the non-sandbox Mechanical Turk both
-    // provide a "turkSubmitTo" parameter when a HIT has been "accepted".
-    // They do not provide a "turkSubmitTo" in preview mode, though.
-    var submitTo = purl().param('turkSubmitTo');
-    if( submitTo !== undefined )
-    {
-        submitTo = decodeURIComponent( submitTo );
-        $('#mturk_form').prop( 'action', submitTo + '/mturk/externalSubmit' );
-    }
-    
-    
-    // Let's store the UserAgent for analyzing later (so we know what level of browser adoption we can expect).
-    $( "#UserAgent" ).val( navigator.userAgent );
     
     $('#ask-button').click( function() {
         
