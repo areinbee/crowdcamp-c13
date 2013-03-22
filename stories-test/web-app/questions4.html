@@ -175,10 +175,87 @@ If you do not agree with the consent form and wish not to participate in this st
     ///
     /// Constants.
     ///
-    var kMinimumQuestionsToSubmit = 1;
-    var kMaximumNoAnswersInARow = 2;
-    var kFractionYesAnswers = .7;
     var kDebugging = false;
+    
+    ///
+    /// "Classes"
+    ///
+    function Story()
+    {
+        // Class instance variables.
+        this.theStory = { 'questions': [] };
+        this.goodQuestionsAsked = 0;
+        this.numberOfNoAnswersInARow = 0;
+    }
+    // Class constants.
+    Story.prototype.kMinimumQuestionsToSubmit = 1;
+    Story.prototype.kMaximumNoAnswersInARow = 2;
+    Story.prototype.kFractionYesAnswers = .7;
+    // Class methods.
+    Story.prototype.story_as_text = function()
+    {
+        return JSON.stringify( this.theStory );
+    }
+    // Appends the given question and answer to the story.
+    // The optional parameter 'options' has:
+    //   an 'incrementQuestionsAsked' field (default true) which specifies whether to increment the count of good questions.
+    //   an 'updateNumberOfNoAnswersInARow' field (default true) which specifies whether to update the number of no's in a row based on the answer.
+    Story.prototype.append_question_and_answer = function( text, answerIsYes, options )
+    {
+        // Default options.
+        if( options === undefined ) options = {};
+        if( options.incrementQuestionsAsked === undefined ) options.incrementQuestionsAsked = true;
+        if( options.updateNumberOfNoAnswersInARow === undefined ) options.updateNumberOfNoAnswersInARow = true;
+    
+        if( options.incrementQuestionsAsked ) this.goodQuestionsAsked += 1;
+    
+        // Keep track of the number of no answers in a row.
+        if( options.updateNumberOfNoAnswersInARow )
+        {
+            if( answerIsYes ) this.numberOfNoAnswersInARow = 0;
+            else this.numberOfNoAnswersInARow += 1;
+        }
+        
+        var history_div = $('#history');
+        
+        this.theStory.questions.push( { 'q': text, 'a': answerIsYes } );
+        $('#payload').val( this.story_as_text() );
+        
+        var answer =
+            answerIsYes
+            ? '<span class="yes">' + text + ' <strong>Yes!</strong></span>'
+            : '<span class="no">' + text + ' <strong>No.</strong></span>'
+            ;
+    
+        history_div.append( $('<div></div>').append( $(answer) ) );
+    }
+    // Returns the known answer to the given question if it has been seen before, and undefined otherwise.
+    Story.prototype.answer_to_question = function( question_text )
+    {
+        question_text = $.trim(question_text).toLowerCase();
+    
+        for( var i = 0; i < this.theStory.questions.length; ++i )
+        {
+            if( $.trim( this.theStory.questions[i].q ).toLowerCase() == question_text )
+            {
+                return this.theStory.questions[i].a;
+            }
+        }
+        
+        return undefined;
+    }
+    // Returns a random answer according to the number of previously seen no's and
+    // the fraction of yes answers constant.
+    Story.prototype.generateRandomAnswer = function()
+    {
+        // If we've seen the maximum number of no's in a row, return yes.
+        if( this.numberOfNoAnswersInARow == this.kMaximumNoAnswersInARow ) {
+            return true;
+        // Otherwise, generate a random answer.
+        } else {
+            return random() < this.kFractionYesAnswers;
+        }
+    }
     
     
     ///
@@ -186,11 +263,8 @@ If you do not agree with the consent form and wish not to participate in this st
     ///
     var assignmentId;
     var stimulus;
-    var theStory = { 'questions': [] };
     var feedbackVisible = false;
-    var goodQuestionsAsked = 0;
-    var numberOfNoAnswersInARow = 0;
-    
+    var theStory = new Story();
     
     ///
     /// Global functions.
@@ -236,64 +310,6 @@ If you do not agree with the consent form and wish not to participate in this st
             $('div.irb').hide();
         }
     }
-    function story_as_text()
-    {
-        return JSON.stringify( theStory );
-    }
-    function append_question_and_answer( text, answerIsYes, options )
-    {
-        // Default options.
-        if( options === undefined ) options = {};
-        if( options.incrementQuestionsAsked === undefined ) options.incrementQuestionsAsked = true;
-        if( options.updateNumberOfNoAnswersInARow === undefined ) options.updateNumberOfNoAnswersInARow = true;
-        
-        if( options.incrementQuestionsAsked ) goodQuestionsAsked += 1;
-        
-        // Keep track of the number of no answers in a row.
-        if( options.updateNumberOfNoAnswersInARow )
-        {
-            if( answerIsYes ) numberOfNoAnswersInARow = 0;
-            else numberOfNoAnswersInARow += 1;
-        }
-        
-        var history_div = $('#history');
-        
-        theStory.questions.push( { 'q': text, 'a': answerIsYes } );
-        $('#payload').val( story_as_text() );
-        
-        var answer =
-            answerIsYes
-            ? '<span class="yes">' + text + ' <strong>Yes!</strong></span>'
-            : '<span class="no">' + text + ' <strong>No.</strong></span>'
-            ;
-        
-        history_div.append( $('<div></div>').append( $(answer) ) );
-    }
-    function answer_to_question( question_text )
-    {
-        question_text = $.trim(question_text).toLowerCase();
-        
-        for( var i = 0; i < theStory.questions.length; ++i )
-        {
-            if( $.trim( theStory.questions[i].q ).toLowerCase() == question_text )
-            {
-                return theStory.questions[i].a;
-            }
-        }
-        
-        return undefined;
-    }
-    function generateRandomAnswer()
-    {
-        // Generate a random answer.
-        var answerIsYes = random() < kFractionYesAnswers;
-        
-        // If that would be too many no's in a row, return yes anyways.
-        if( !answerIsYes && numberOfNoAnswersInARow+1 > kMaximumNoAnswersInARow )
-            answerIsYes = true;
-        
-        return answerIsYes;
-    }
     
     
     ///
@@ -318,7 +334,7 @@ If you do not agree with the consent form and wish not to participate in this st
             {
                 for( var i = 0; i < data.questions.length; ++i )
                 {
-                    append_question_and_answer( data.questions[i].q, data.questions[i].a, { 'incrementQuestionsAsked': false } );
+                    theStory.append_question_and_answer( data.questions[i].q, data.questions[i].a, { 'incrementQuestionsAsked': false } );
                 }
                 
                 update_submit_button_following_success();
@@ -356,28 +372,36 @@ If you do not agree with the consent form and wish not to participate in this st
         
         var q = $('#question');
         
+        // Get the question and clear the form field.
         var text = q.val();
+        q.val('');
+        
+        // Clean up the question and check if it's valid.
         text = $.trim(text);
         
-        // Check for a known answer.
-        var answerIsYes = answer_to_question( text );
-        // If there is no known answer, generate a random answer.
-        if( answerIsYes === undefined ) answerIsYes = generateRandomAnswer();
+        // Ignore blank questions.
+        if( text === '' ) return;
         
-        // TODO: Check for "Yes" "No" and restate "Ask questions that can be answered with a "yes" or "no".
-        if( text !== '' )
+        // Warn the user if they type simply "yes" or "no".
+        if( text.toLowerCase() === "yes" || text.toLowerCase() === "yes?" || text.toLowerCase() === "no" || text.toLowerCase() === "no?" )
         {
-            append_question_and_answer( text, answerIsYes );
+            alert( 'Ask questions that can be answered with a "yes" or "no".' );
+            return;
         }
         
-        // Clear the question.
-        q.val('');
+        // Check for a known answer.
+        var answerIsYes = theStory.answer_to_question( text );
+        // If there is no known answer, generate a random answer.
+        if( answerIsYes === undefined ) answerIsYes = theStory.generateRandomAnswer();
+        
+        // Append the question and answer.
+        theStory.append_question_and_answer( text, answerIsYes );
         } );
     
     $('#mturk_form').submit( function() {
         if( feedbackVisible ) return true;
         
-        if( goodQuestionsAsked < kMinimumQuestionsToSubmit )
+        if( theStory.goodQuestionsAsked < theStory.kMinimumQuestionsToSubmit )
         {
             alert( "Are you sure you've reached the end?" );
             return false;
