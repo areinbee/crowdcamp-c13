@@ -1,0 +1,5 @@
+[MTurkConnection( mechanicalturk.amazonaws.com )]
+Qualification: [u'PercentAssignmentsApprovedRequirement', u'GreaterThan', u'95']
+Qualification: [u'NumberHitsApprovedRequirement', u'GreaterThan', u'500']
+Qualification: [u'LocaleRequirement', u'EqualTo', u'US']
+[create_hit( http://hcomp.yotamgingold.com/questions2fromexisting/questions4.html, $0.2 ): 23WGOOGQSCMANOFP779U3U00O6SFFI]

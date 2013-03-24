@@ -1,4 +1,4 @@
 [MTurkConnection( mechanicalturk.amazonaws.com )]
 HITId,HITTypeId,CreationTime,Title,Description,Keywords,HITStatus,Reward,LifetimeInSeconds,AssignmentDurationInSeconds,MaxAssignments,AutoApprovalDelayInSeconds,ExternalURL,FrameHeight,RequesterAnnotation,NumberOfSimilarHITs,HITReviewStatus,NumberofAssignmentsPending,NumberofAssignmentsAvailable,NumberofAssignmentsCompleted
-2EZ0JPPSI2K2J3QF40WKUM6WJIRJPL,2QDSSZVXX2Q8A8Z75HPGWIW1NS66OX,2013-03-22T06:41:03Z,Guess my story.,I have created a story.  Ask Yes/No questions to find out what the story is about!,"text, story, creative, fun, creativity, writing",Reviewable,$0.20,,900,50,0,http://hcomp.yotamgingold.com/questions2fromexisting/questions4.html,800,,,NotReviewed,,,
+23WGOOGQSCMANOFP779U3U00O6SFFI,2L2F9SSSHX15O2SF8Y85O8J4OP0VZF,2013-03-24T03:55:40Z,Guess my story.,I have created a story.  Ask Yes/No questions to find out what the story is about!,"text, story, creative, fun, creativity, writing",Assignable,$0.20,,900,20,0,http://hcomp.yotamgingold.com/questions2fromexisting/questions4.html,800,,,NotReviewed,,,
 
