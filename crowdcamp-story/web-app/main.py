@@ -31,6 +31,12 @@ final_story = "<h1>Great, you're done! Here is the summary of facts in your stor
 all_stories = "<h1>All stories</h1>"
 question_count = 20
 
+original_domain = {
+    "main_prompt": "I've got a story for you. Ask YES/NO questions to find out more!",
+    "elements": ["the story"],
+    "yes_count" : 200,
+    "new_element_prompt": "Now ask about:"
+}
 
 story_domain_1 = {
     "main_prompt": "I've got a story for you. Ask YES/NO questions to find out more!",
@@ -74,7 +80,7 @@ story_domain_6 = {
     "new_element_prompt" : "Now let's think about: "    
     }
     
-domains = [story_domain_1, story_domain_2, story_domain_3, story_domain_4, story_domain_5, story_domain_6]
+domains = [original_domain, story_domain_1, story_domain_2, story_domain_3, story_domain_4, story_domain_5, story_domain_6]
     
 
 div_irb = """
@@ -131,8 +137,20 @@ class Question(db.Model):
    
         response.out.write('<h2 class="%s">%s %s <span class="answer">%s</span></h2>' % (self.answer, prefix, self.question, self.answer) )
         
-        
 class MainHandler(webapp2.RequestHandler):
+    def get(self):
+        self.response.out.write(include_css)
+        self.response.out.write("""
+            <h2>Story Oracle</h2>
+            <h1><a href="new?domainId=0">Original</a></h1>
+            <h1><a href="new?domainId=1">Story with structure: character/setting/conflict/resolution</a></h1>
+            <h1><a href="new?domainId=5">Story with structure: once upon a time, until one day, and because of that, until finally...</a></h1>
+            <h1><a href="new?domainId=6">Mystery movie poster</a></h1>
+            <h1><a href="new?domainId=2">Movie poster: Batman</a></h1>
+            <h1><a href="new?domainId=3">Movie poster: Titanic</a></h1>
+        """)
+        
+class NewStoryHandler(webapp2.RequestHandler):
     def get(self):
         s = Story()
         s.user = self.request.get('user')
@@ -284,6 +302,7 @@ class AnswerQuestion(webapp2.RequestHandler):
         
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
+    ('/new', NewStoryHandler),
     ('/editstory/([^/]+)', EditStoryHandler),
     ('/story/([^/]+)', StoryHandler),
     ('/answer_q', AnswerQuestion),
