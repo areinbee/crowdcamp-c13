@@ -1,0 +1,1 @@
+find . -name 'results*.csv' -print -exec echo WorkerId2RandomId/WorkerId2RandomId.py '{}' ';'
