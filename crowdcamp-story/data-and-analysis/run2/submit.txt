@@ -1,0 +1,7 @@
+[MTurkConnection( mechanicalturk.amazonaws.com )]
+[create_hit( http://storyoracle.appspot.com/new?domainId=0, $0.2 ): 27QH88MQU6L9TP0ZXUIX64AIJVEBUU]
+[create_hit( http://storyoracle.appspot.com/new?domainId=1, $0.2 ): 2J5JKM05BMJXZV3JH9KPIRA7SL3DIV]
+[create_hit( http://storyoracle.appspot.com/new?domainId=5, $0.2 ): 2DABRI8IUB22ZND6WLKLK3L0FRR5HN]
+[create_hit( http://storyoracle.appspot.com/new?domainId=6, $0.2 ): 29D7WGKCCVLP8QFQIF8AYQ4C93XU47]
+[create_hit( http://storyoracle.appspot.com/new?domainId=2, $0.2 ): 2E924SMEZZ2QNYRAONZPIY38TC33KY]
+[create_hit( http://storyoracle.appspot.com/new?domainId=3, $0.2 ): 2JJO3W5XH0JTU6NPZR5PUSP750SDJ7]

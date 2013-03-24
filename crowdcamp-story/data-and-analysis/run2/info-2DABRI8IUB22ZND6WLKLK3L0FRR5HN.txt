@@ -1,0 +1,4 @@
+[MTurkConnection( mechanicalturk.amazonaws.com )]
+HITId,HITTypeId,CreationTime,Title,Description,Keywords,HITStatus,Reward,LifetimeInSeconds,AssignmentDurationInSeconds,MaxAssignments,AutoApprovalDelayInSeconds,ExternalURL,FrameHeight,RequesterAnnotation,NumberOfSimilarHITs,HITReviewStatus,NumberofAssignmentsPending,NumberofAssignmentsAvailable,NumberofAssignmentsCompleted
+2DABRI8IUB22ZND6WLKLK3L0FRR5HN,22PSBRI8IUB638EVYAJTUB3L0F94GN,2013-03-24T19:58:17Z,Guess my story.,I've created a story for you. Ask Yes/No questions to find out what the story is about!,"text, story, creative, fun, creativity, writing",Assignable,$0.20,,900,20,0,http://storyoracle.appspot.com/new?domainId=5,800,,,NotReviewed,,,
+
