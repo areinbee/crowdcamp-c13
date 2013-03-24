@@ -3,24 +3,30 @@ ln -s ../../ext/mturk-py/mturk.py
 
 MTURKPY="./mturk.py really"
 #MTURKPY=./mturk.py
-BASEDIR=run1
+BASEDIR=run2
 
-HITID=2OV1X3V0FK0GTY76TUD7YKK9L1QMF6
+## After it's been submitted:
+HITIDs=$(grep create_hit "${BASEDIR}/submit.txt" | sed -E 's/.*: ([A-Z0-9]*)\]/\1/')
 
 ## Submit
 ${MTURKPY} submit "${BASEDIR}/mturk.json" | tee "${BASEDIR}/submit.txt"
 
 ## Info
-${MTURKPY} info "${HITID}" | tee "${BASEDIR}/info.txt"
+for HITID in ${HITIDs}
+do
+    ${MTURKPY} info "${HITID}" | tee "${BASEDIR}/info-${HITID}.txt"
+done
 
 ## Check for Mechanical Turk jobs by my Requester ID:
 https://workersandbox.mturk.com/mturk/searchbar?selectedSearchType=hitgroups&requesterId=A1Z6ANVZ53BG1X
 https://www.mturk.com/mturk/searchbar?selectedSearchType=hitgroups&requesterId=A1Z6ANVZ53BG1X
 
 ## Retrieve
-${MTURKPY} retrieve "${HITID}" | head -2 | tee "${BASEDIR}/results.csv.meta"
-${MTURKPY} retrieve "${HITID}" | tail -n +3 > "${BASEDIR}/results.csv"
-
+for HITID in ${HITIDs}
+do
+    ${MTURKPY} retrieve "${HITID}" | head -2 | tee "${BASEDIR}/results-${HITID}.csv.meta"
+    ${MTURKPY} retrieve "${HITID}" | tail -n +3 > "${BASEDIR}/results-${HITID}.csv"
+done
 
 ### Analyze ###
 
