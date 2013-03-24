@@ -62,14 +62,14 @@ story_domain_3 = {
 story_domain_4 = {
     "main_prompt": "Help me design a movie poster. I've got a specific movie in mind. Ask questions to find out more! The questions MUST be ones that can be answered with a YES or NO. Don't worry if an answer doesn't appear, just press Enter again.",
     "elements": ["Theme", "Layout", "Images", "Text"],
-    "yes_count" : 1,
+    "yes_count" : 7,
     "new_element_prompt" : "Now let's think about: "
     }
     
 story_domain_5 = {
     "main_prompt": "I've got a story for you. Ask questions to find out more! The questions MUST be ones that can be answered with a YES or NO. Don't worry if an answer doesn't appear, just press Enter again.",
     "elements": ["Once upon a time", "every day", "but one day", "because of that", "because of that", "until, finally", "and ever since then"],
-    "yes_count" : 3,
+    "yes_count" : 7,
     "new_element_prompt": " >> "
     }
 
@@ -117,6 +117,7 @@ class Story(db.Model):
     user = db.StringProperty()
     curr_element_id = db.IntegerProperty()
     yes_count = db.IntegerProperty()
+    no_in_a_row_count = db.IntegerProperty()
     domain_id = db.IntegerProperty()
 
 class Question(db.Model):
@@ -155,6 +156,7 @@ class NewStoryHandler(webapp2.RequestHandler):
         s = Story()
         s.user = self.request.get('user')
         s.yes_count = 0
+        s.no_in_a_row_count = 1
         s.curr_element_id = 0
         if self.request.get('domainId') is not None :
             s.domain_id = int(self.request.get('domainId'))
@@ -281,16 +283,20 @@ class AnswerQuestion(webapp2.RequestHandler):
             q.story = Story.get(story_id)
             q.q_id = int(self.request.get('question_id'))
             q.element = domains[q.story.domain_id]['elements'][q.story.curr_element_id]
-            if random.random() < .5:
+            if random.random() < .5 or q.story.no_in_a_row_count >= 2:
                 q.answer = "yes"
                 q.story.yes_count+=1
+                q.story.no_in_a_row_count = 0
                 if q.story.yes_count > domains[q.story.domain_id]['yes_count']:
                     q.story.curr_element_id += 1
                     q.story.yes_count = 0
                 q.story.put()
             else:
                 q.answer = "no"
-                
+                q.story.no_in_a_row_count += 1
+               
+            logging.info("i am logging something!") 
+            logging.info("yes count: %d, nos in a row count: %d" % (q.story.yes_count, q.story.no_in_a_row_count))
             q.put()
             
             if q.story.curr_element_id >= len(domains[q.story.domain_id]['elements']):
