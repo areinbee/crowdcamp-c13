@@ -18,7 +18,7 @@ HITID=27WOZFYQS1CWY0T2CK4SDIC1E87MJ9
 ${MTURKPY} submit "${BASEDIR}/mturk.json" | tee "${BASEDIR}/submit.txt"
 
 ## Info
-${MTURKPY} info "${HITID}" | tee "${BASEDIR}/info.txt"
+${MTURKPY} info "${HITID}" | tee "${BASEDIR}/info-${NAME}.txt"
 
 ## Check for Mechanical Turk jobs by my Requester ID:
 https://workersandbox.mturk.com/mturk/searchbar?selectedSearchType=hitgroups&requesterId=A15H0LB6D1DHDQ
@@ -27,7 +27,7 @@ https://www.mturk.com/mturk/searchbar?selectedSearchType=hitgroups&requesterId=A
 ## Retrieve
 ${MTURKPY} retrieve "${HITID}" | head -2 | tee "${BASEDIR}/results-${NAME}.csv.meta"
 ${MTURKPY} retrieve "${HITID}" | tail -n +3 > "${BASEDIR}/results-${NAME}.csv"
-
+./csv_helpers.py "${BASEDIR}/results-${NAME}.csv" payload > "${BASEDIR}/results-${NAME}-payload.json"
 
 ### Analyze ###
 

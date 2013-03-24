@@ -1,0 +1,23 @@
+Fit and Diverse- Set Evolution for Inspiring 3D Shape Galleries (Xu et al. 2012 SIGGRAPH)
+
+Crowd vs. Crowd- Large-Scale Cooperative Design through Open Team Competition (Cheong Ha Park, KyoungHee Son, Joon Hyub Lee, Seok-Hyung Bae 2013 CSCW)
+
+Liz Gerber and others' work on improv for design
+
+Steven Dow on multiple designs
+
+work on evolutionary algorithms from florida that focus on diverse searches whose name escapes me
+
+Crowdsourcing and Creativity (Mira Dontcheva, Elizabeth Gerber, Sheena Lewis 2011 CHI).pdf
+Cooks or Cobblers? Crowd Creativity through Combination (Lixiu Yu, Jeffrey V. Nickerson 2011 CHI).pdf
+
+Phillip Lamplugh:
+    I paid people 25 cents to write stories based on my photoblog.
+    http://quarterstories.tumblr.com/
+  
+Matt Gillooly:
+    I once used Turk to outsource a birthday greeting for my friend.  Cheaper than buying a Hallmark card!
+    http://happyturkday.tumblr.com/
+
+Brainstorm, Chainstorm, Cheatstorm, Tweetstorm: New Ideation Strategies for Distributed HCI Design. Haakon Faste, Nir Rachmel, Russell Essary, Evan Sheehan, Proc. CHI, 2013.
+    http://crowdresearch.org/blog/?p=5345

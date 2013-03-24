@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<!-- saved from url=(0037)http://crowdresearch.org/blog/?p=5250 -->
+<html lang="en-US"><script>(function main() {
+    // Create enabled event
+    function fireEnabledEvent() {
+        // If gli exists, then we are already present and shouldn't do anything
+        if (!window.gli) {
+            setTimeout(function () {
+                var enabledEvent = document.createEvent("Event");
+                enabledEvent.initEvent("WebGLEnabledEvent", true, true);
+                document.dispatchEvent(enabledEvent);
+            }, 0);
+        } else {
+            //console.log("WebGL Inspector already embedded on the page - disabling extension");
+        }
+    };
+
+    // Grab the path root from the extension
+    document.addEventListener("WebGLInspectorReadyEvent", function (e) {
+        var pathElement = document.getElementById("__webglpathroot");
+        if (window["gliloader"]) {
+            gliloader.pathRoot = pathElement.innerText;
+        } else {
+            // TODO: more?
+            window.gliCssUrl = pathElement.innerText + "gli.all.css";
+        }
+    }, false);
+
+    // Rewrite getContext to snoop for webgl
+    var originalGetContext = HTMLCanvasElement.prototype.getContext;
+    if (!HTMLCanvasElement.prototype.getContextRaw) {
+        HTMLCanvasElement.prototype.getContextRaw = originalGetContext;
+    }
+    HTMLCanvasElement.prototype.getContext = function () {
+        var ignoreCanvas = this.internalInspectorSurface;
+        if (ignoreCanvas) {
+            return originalGetContext.apply(this, arguments);
+        }
+
+        var result = originalGetContext.apply(this, arguments);
+        if (result == null) {
+            return null;
+        }
+
+        var contextNames = ["moz-webgl", "webkit-3d", "experimental-webgl", "webgl", "3d"];
+        var requestingWebGL = contextNames.indexOf(arguments[0]) != -1;
+        if (requestingWebGL) {
+            // Page is requesting a WebGL context!
+            fireEnabledEvent(this);
+
+            // If we are injected, inspect this context
+            if (window.gli) {
+                if (gli.host.inspectContext) {
+                    // TODO: pull options from extension
+                    result = gli.host.inspectContext(this, result);
+                    // NOTE: execute in a timeout so that if the dom is not yet
+                    // loaded this won't error out.
+                    window.setTimeout(function() {
+                        var hostUI = new gli.host.HostUI(result);
+                        result.hostUI = hostUI; // just so we can access it later for debugging
+                    }, 0);
+                }
+            }
+        }
+
+        return result;
+    };
+})();</script><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>CrowdCamp Report: DesignOracle: Exploring a Creative Design Space with a Crowd of Non-Experts | Follow the Crowd</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="all" href="./CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd_files/style.css">
+<link rel="pingback" href="http://crowdresearch.org/blog/xmlrpc.php">
+<!--[if lt IE 9]>
+<script src="http://crowdresearch.org/blog/wp-content/themes/twentyeleven/js/html5.js" type="text/javascript"></script>
+<![endif]-->
+<link rel="alternate" type="application/rss+xml" title="Follow the Crowd » Feed" href="http://crowdresearch.org/blog/?feed=rss2">
+<link rel="alternate" type="application/rss+xml" title="Follow the Crowd » Comments Feed" href="http://crowdresearch.org/blog/?feed=comments-rss2">
+
+			<script type="text/javascript">//<![CDATA[
+			// Google Analytics for WordPress by Yoast v4.2.8 | http://yoast.com/wordpress/google-analytics/
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-20692321-1']);
+							_gaq.push(['_trackPageview']);
+			(function () {
+				var ga = document.createElement('script');
+				ga.type = 'text/javascript';
+				ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(ga, s);
+			})();
+			//]]></script>
+			<link rel="alternate" type="application/rss+xml" title="Follow the Crowd » CrowdCamp Report: DesignOracle: Exploring a Creative Design Space with a Crowd of Non-Experts Comments Feed" href="http://crowdresearch.org/blog/?feed=rss2&p=5250">
+<link rel="stylesheet" id="moztheme2011-css" href="./CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd_files/moztheme2011.css" type="text/css" media="all">
+<link rel="stylesheet" id="admin-bar-css" href="./CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd_files/admin-bar.min.css" type="text/css" media="all">
+<script type="text/javascript" src="./CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd_files/comment-reply.min.js"></script>
+<script type="text/javascript" src="./CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd_files/jquery.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://crowdresearch.org/blog/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://crowdresearch.org/blog/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="CrowdCamp Report: Remixing *Abstract* Creative Elements" href="http://crowdresearch.org/blog/?p=5175">
+<link rel="next" title="Mechanical Turk Workers Are Not Anonymous" href="http://crowdresearch.org/blog/?p=5177">
+<meta name="generator" content="WordPress 3.5.1">
+<link rel="canonical" href="./CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd_files/CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd.html">
+<meta name="framework" content="Alkivia Framework 0.8">
+	<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<style type="text/css" media="print">#wpadminbar { display:none; }</style>
+<style type="text/css" media="screen">
+	html { margin-top: 28px !important; }
+	* html body { margin-top: 28px !important; }
+</style>
+	<style type="text/css">
+			#site-title,
+		#site-description {
+			position: absolute !important;
+			clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+			clip: rect(1px, 1px, 1px, 1px);
+		}
+		</style>
+	<style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #f1f1f1; }
+</style>
+</head>
+
+<body class="single single-post postid-5250 single-format-standard logged-in admin-bar no-customize-support custom-background two-column right-sidebar moz-sidebar-adjust moz-nav-adjust moz-widget-list-adjust"><div id="StayFocusd-infobar" style="display: none; top: 2180px;"><img src="chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/img/eye_19x19_red.png"><span id="StayFocusd-infobar-msg"></span><span id="StayFocusd-infobar-links"><a href="http://crowdresearch.org/blog/?p=5250#" id="StayFocusd-infobar-never-show">hide forever</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://crowdresearch.org/blog/?p=5250#" id="StayFocusd-infobar-hide">hide once</a></span></div>
+<div id="page" class="hfeed">
+	<header id="branding" role="banner">
+			<hgroup>
+				<h1 id="site-title"><span><a href="http://crowdresearch.org/blog/" title="Follow the Crowd" rel="home">Follow the Crowd</a></span></h1>
+				<h2 id="site-description">Crowd Research Blog</h2>
+			</hgroup>
+
+						<a href="http://crowdresearch.org/blog/">
+									<img src="./CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd_files/FollowTheCrowdBanner.png" width="924" height="130" alt="">
+							</a>
+			
+							<div class="only-search with-image">
+					<form method="get" id="searchform" action="http://crowdresearch.org/blog/">
+		<label for="s" class="assistive-text">Search</label>
+		<input type="text" class="field" name="s" id="s" placeholder="Search">
+		<input type="submit" class="submit" name="submit" id="searchsubmit" value="Search">
+	</form>
+				</div>
+			
+			<nav id="access" role="navigation">
+				<h3 class="assistive-text">Main menu</h3>
+								<div class="skip-link"><a class="assistive-text" href="http://crowdresearch.org/blog/?p=5250#content" title="Skip to primary content">Skip to primary content</a></div>
+				<div class="skip-link"><a class="assistive-text" href="http://crowdresearch.org/blog/?p=5250#secondary" title="Skip to secondary content">Skip to secondary content</a></div>
+								<div class="menu"><ul><li><a href="http://crowdresearch.org/blog/" title="Home">Home</a></li><li class="page_item page-item-2"><a href="http://crowdresearch.org/blog/?page_id=2">About</a></li><li class="page_item page-item-1215"><a href="http://crowdresearch.org/blog/?page_id=1215">Submission Instructions</a></li></ul></div>
+			</nav><!-- #access -->
+	</header><!-- #branding -->
+
+
+	<div id="main">
+
+		<div id="primary">
+			<div id="content" role="main">
+
+				
+					<nav id="nav-single">
+						<h3 class="assistive-text">Post navigation</h3>
+						<span class="nav-previous"><a href="http://crowdresearch.org/blog/?p=5175" rel="prev"><span class="meta-nav">←</span> Previous</a></span>
+						<span class="nav-next"><a href="http://crowdresearch.org/blog/?p=5177" rel="next">Next <span class="meta-nav">→</span></a></span>
+					</nav><!-- #nav-single -->
+
+					
+<article id="post-5250" class="post-5250 post type-post status-publish format-standard hentry category-uncategorized category-crowdcamp-2013 tag-creative tag-creativity tag-crowdsourcing tag-design">
+	<header class="entry-header">
+		<h1 class="entry-title">CrowdCamp Report: DesignOracle: Exploring a Creative Design Space with a Crowd of Non-Experts</h1>
+
+				<div class="entry-meta">
+			<span class="sep">Posted on </span><a href="./CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd_files/CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd.html" title="1:32 pm" rel="bookmark"><time class="entry-date" datetime="2013-03-05T13:32:30+00:00">March 5, 2013</time></a><span class="by-author"> <span class="sep"> by </span> <span class="author vcard"><a class="url fn n" href="http://crowdresearch.org/blog/?author=148" title="View all posts by yotam" rel="author">yotam</a></span></span>		</div><!-- .entry-meta -->
+			</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<div style=""><div style="display:inline;"></div><div style="display:inline;"><a href="http://twitter.com/share?url=http%3A%2F%2Fcrowdresearch.org%2Fblog%2F%3Fp%3D5250" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://twitter.com&#39;]);" class="twitter-share-button" data-count="horizontal">Tweet</a></div><div style="display:inline;"><g:plusone size="medium" href="http://crowdresearch.org/blog/?p=5250"></g:plusone><script type="text/javascript">(function() { var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true; po.src = 'https://apis.google.com/js/plusone.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s); })();</script></div></div><p>For an unconstrained design problem like writing a fiction story or designing a poster,&nbsp;can a crowd of non-experts be shepherded to generate a diverse collection of high quality ideas? Can the crowd also generate the actual stories or posters? With the goal of building crowd-powered creativity support tools, a group of us, <a href="http://www.cs.cmu.edu/~pandre/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://www.cs.cmu.edu&#39;]);">Paul André</a>, <a href="http://robinbrewer.com/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://robinbrewer.com&#39;]);">Robin N. Brewer</a>, <a href="http://www.eecs.harvard.edu/~kgajos/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://www.eecs.harvard.edu&#39;]);">Krzysztof Gajos</a>, <a href="http://cs.gmu.edu/~ygingold/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://cs.gmu.edu&#39;]);">Yotam Gingold</a>, <a href="http://www.kurtluther.com/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://www.kurtluther.com&#39;]);">Kurt Luther</a>, Pao Siangliulue, and <a href="http://homes.cs.washington.edu/~ktuite/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://homes.cs.washington.edu&#39;]);">Kathleen Tuite</a>, set out to answer these questions. We based our approach on a technique described by Keith Johnstone in his book <em><a href="http://www.amazon.com/Impro-Improvisation-Theatre-Keith-Johnstone/dp/0878301178" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://www.amazon.com&#39;]);">Impro: Improvisation and the Theatre</a></em> for extracting creativity from people who believe themselves to be uncreative. An uncreative person is told that a story is already prepared and he or she has merely to guess it via yes or no questions. Unbeknown to the guesser, there is no story; guesses are met with a yes or no response, essentially randomly. For example:</p>
+<ol>
+<li><span style="color: #0a0;">Is it about CSCW? Yes</span></li>
+<li><span style="color: #a00;">Is it about CrowdCamp? No</span></li>
+<li><span style="color: #0a0;">Is it about a bitter rivalry? Yes</span></li>
+<li>…</li>
+</ol>
+<p>As questioning proceeds, a consistent story is revealed, entirely due to the guesser generating and then externalizing an internally consistent mental model of a story (or poster, etc.) that justifies the given answers.</p>
+<p>To evaluate the potential of this “StoryOracle” approach, we ran a series of experiments on Amazon Mechanical Turk:</p>
+<ol>
+<li>We extracted dozens of surprising and creative stories and poster designs using the technique.</li>
+<li>We explored the design space in a directed manner by generating variations on well-liked stories. Every question and yes or no answer provides a possible branch-point. To branch, we selected an important “pivot” question and showed all questions and answers up to the pivot, followed by the pivot question and the same or the <em>opposite</em> answer, to a set of new participants with instructions to continue guessing the story. For example: <a href="./CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd_files/branching.001-yotam.png"><img class="aligncenter size-full wp-image-5252" alt="A story and branches" src="./CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd_files/branching.001-yotam.png" width="858" height="709"></a></li>
+<li>We converted question-based stories into “normal” stories. For example:<br>
+<blockquote><p>Jack is a scientist who has dedicated his life to discovering how to generate energy using fusion power because he believes it would benefit humanity. Eventually he discovers how to do it and tells his wife, Jane, the good news. Jane is not aware that this is a secret and talk about it with Carl (to whom she was in love before meeting Jack). Carl tries to steal the secret from Jack but Jane fought with him and is able to impede him.<br>
+However, Jack discovers that Jane told Carl about the secret and they have a fight because of it. Eventually, Carl, who is angry with both of them, decides to kill Jack and Jane. He manages to kill the couple but when he is about to steal Jack’s secret, the power fusion discovery is released to the public through the internet.<br>
+Thus, all the world is able to produce energy using Jack’s discovery and eventually his dream of providing a better quality of life to everyone comes true.</p></blockquote>
+</li>
+<li>We evaluated stories’ quality.</li>
+<li>We devised domain-specific prompts for questioners, such as the setting, theme, and characters in a story.</li>
+</ol>
+<p>Taken together, in the two days of CrowdCamp we managed to build the foundation for a crowd-powered tool to explore a creative design space, in an undirected or directed manner, and generate a variety of high quality artifacts.</p>
+<p><small><a href="http://www.cs.cmu.edu/~pandre/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://www.cs.cmu.edu&#39;]);">Paul André</a>, Carnegie Mellon University<br>
+<a href="http://robinbrewer.com/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://robinbrewer.com&#39;]);">Robin N. Brewer</a>, University of Maryland, Baltimore County<br>
+<a href="http://www.eecs.harvard.edu/~kgajos/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://www.eecs.harvard.edu&#39;]);">Krzysztof Gajos</a>, Harvard University<br>
+<a href="http://cs.gmu.edu/~ygingold/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://cs.gmu.edu&#39;]);">Yotam Gingold</a>, George Mason University<br>
+<a href="http://www.kurtluther.com/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://www.kurtluther.com&#39;]);">Kurt Luther</a>, Carnegie Mellon University<br>
+Pao Siangliulue, Harvard University<br>
+<a href="http://homes.cs.washington.edu/~ktuite/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://homes.cs.washington.edu&#39;]);">Kathleen Tuite</a>, University of Washington<br>
+</small></p>
+			</div><!-- .entry-content -->
+
+	<footer class="entry-meta">
+		This entry was posted in <a href="http://crowdresearch.org/blog/?cat=1" title="View all posts in -" rel="category">-</a>, <a href="http://crowdresearch.org/blog/?cat=345" title="View all posts in CrowdCamp 2013" rel="category">CrowdCamp 2013</a> and tagged <a href="http://crowdresearch.org/blog/?tag=creative" rel="tag">creative</a>, <a href="http://crowdresearch.org/blog/?tag=creativity" rel="tag">creativity</a>, <a href="http://crowdresearch.org/blog/?tag=crowdsourcing" rel="tag">crowdsourcing</a>, <a href="http://crowdresearch.org/blog/?tag=design" rel="tag">Design</a> by <a href="http://crowdresearch.org/blog/?author=148">yotam</a>. Bookmark the <a href="./CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd_files/CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd.html" title="Permalink to CrowdCamp Report: DesignOracle: Exploring a Creative Design Space with a Crowd of Non-Experts" rel="bookmark">permalink</a>.		<span class="edit-link"><a class="post-edit-link" href="http://crowdresearch.org/blog/wp-admin/post.php?post=5250&action=edit" title="Edit Post">Edit</a></span>
+				<div id="author-info">
+			<div id="author-avatar">
+							</div><!-- #author-avatar -->
+			<div id="author-description">
+				<h2>About yotam</h2>
+				Yotam Gingold is an assistant professor of computer science at George Mason University.  His research interests include geometric modeling, interaction, creativity support, human computation, and crowdsourcing.				<div id="author-link">
+					<a href="http://crowdresearch.org/blog/?author=148" rel="author">
+						View all posts by yotam <span class="meta-nav">→</span>					</a>
+				</div><!-- #author-link	-->
+			</div><!-- #author-description -->
+		</div><!-- #author-info -->
+			</footer><!-- .entry-meta -->
+</article><!-- #post-5250 -->
+
+						<div id="comments">
+	
+	
+	
+									<div id="respond">
+				<h3 id="reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="http://crowdresearch.org/blog/?p=5250#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://crowdresearch.org/blog/wp-comments-post.php" method="post" id="commentform">
+																			<p class="logged-in-as">Logged in as <a href="http://crowdresearch.org/blog/wp-admin/profile.php">yotam</a>. <a href="http://crowdresearch.org/blog/wp-login.php?action=logout&redirect_to=http%3A%2F%2Fcrowdresearch.org%2Fblog%2F%3Fp%3D5250&_wpnonce=8baf6e2c40" title="Log out of this account">Log out?</a></p>																			<p class="comment-form-comment"><label for="comment">Comment</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>						<p class="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href="" title=""&gt; &lt;abbr title=""&gt; &lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=""&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=""&gt; &lt;strike&gt; &lt;strong&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="Post Comment">
+							<input type="hidden" name="comment_post_ID" value="5250" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="99409c2c43"></p>					</form>
+							</div><!-- #respond -->
+				<script type="text/javascript">
+		jQuery(document).ready(function () {
+			jQuery('#commentform').submit(function () {
+				_gaq.push(
+					['_setAccount', 'UA-20692321-1'],
+					['_trackEvent', 'comment', 'submit']
+				);
+			});
+		});
+	</script>
+				
+</div><!-- #comments -->
+
+				
+			</div><!-- #content -->
+		</div><!-- #primary -->
+
+		<div id="secondary" class="widget-area" role="complementary">
+			<aside id="text-4" class="widget widget_text">			<div class="textwidget"><form style="border:1px solid #ccc;padding:2px;text-align:center;" action="http://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open(&#39;http://feedburner.google.com/fb/a/mailverify?uri=FollowTheCrowd&#39;, &#39;popupwindow&#39;, &#39;scrollbars=yes,width=550,height=520&#39;);return true"><div style="font-size: 13px;">Enter your email address:</div><div style="margin: 4px;"><input type="text" style="width:140px" name="email"></div><input type="hidden" value="FollowTheCrowd" name="uri"><input type="hidden" name="loc" value="en_US"><input type="submit" value="Subscribe"><div style="font-size: 10px;">Delivered by <a href="http://feedburner.google.com/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-widget&#39;,&#39;http://feedburner.google.com&#39;]);" target="_blank">FeedBurner</a></div></form></div>
+		</aside><aside id="meta-2" class="widget widget_meta"><h3 class="widget-title">join the crowd</h3>			<ul>
+			<li><a href="http://crowdresearch.org/blog/wp-admin/">Site Admin</a></li>			<li><a href="http://crowdresearch.org/blog/wp-login.php?action=logout&_wpnonce=8baf6e2c40">Log out</a></li>
+			<li><a href="http://crowdresearch.org/blog/?feed=rss2" title="Syndicate this site using RSS 2.0">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://crowdresearch.org/blog/?feed=comments-rss2" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.org</a></li>
+						</ul>
+</aside><aside id="categories-2" class="widget widget_categories"><h3 class="widget-title">posts by category</h3><select name="cat" id="cat" class="postform">
+	<option value="-1">Select Category</option>
+	<option class="level-0" value="1">-&nbsp;&nbsp;(100)</option>
+	<option class="level-0" value="67">Call for participation&nbsp;&nbsp;(18)</option>
+	<option class="level-0" value="137">CHI 2012&nbsp;&nbsp;(10)</option>
+	<option class="level-0" value="271">CIDR 2013&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="345">CrowdCamp 2013&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="79">CSCW 2012&nbsp;&nbsp;(22)</option>
+	<option class="level-0" value="172">CSCW 2013&nbsp;&nbsp;(53)</option>
+	<option class="level-0" value="149">HCOMP 2012&nbsp;&nbsp;(7)</option>
+	<option class="level-0" value="265">HCOMP 2013&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="275">ICDE 2013&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="189">IUI 2012&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="330">MM 2013&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="340">OOPSLA 2012&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="73">UIST 2011&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="150">UIST 2012&nbsp;&nbsp;(4)</option>
+	<option class="level-0" value="66">WikiSym 2011&nbsp;&nbsp;(8)</option>
+	<option class="level-0" value="120">WSDM 2012&nbsp;&nbsp;(8)</option>
+</select>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+	var dropdown = document.getElementById("cat");
+	function onCatChange() {
+		if ( dropdown.options[dropdown.selectedIndex].value > 0 ) {
+			location.href = "http://crowdresearch.org/blog/?cat="+dropdown.options[dropdown.selectedIndex].value;
+		}
+	}
+	dropdown.onchange = onCatChange;
+/* ]]> */
+</script>
+
+</aside><aside id="archives-2" class="widget widget_archive"><h3 class="widget-title">posts by month</h3>		<select name="archive-dropdown" onchange="document.location.href=this.options[this.selectedIndex].value;"> <option value="">Select Month</option> 	<option value="http://crowdresearch.org/blog/?m=201303"> March 2013 &nbsp;(3)</option>
+	<option value="http://crowdresearch.org/blog/?m=201302"> February 2013 &nbsp;(23)</option>
+	<option value="http://crowdresearch.org/blog/?m=201301"> January 2013 &nbsp;(18)</option>
+	<option value="http://crowdresearch.org/blog/?m=201212"> December 2012 &nbsp;(14)</option>
+	<option value="http://crowdresearch.org/blog/?m=201211"> November 2012 &nbsp;(7)</option>
+	<option value="http://crowdresearch.org/blog/?m=201210"> October 2012 &nbsp;(5)</option>
+	<option value="http://crowdresearch.org/blog/?m=201209"> September 2012 &nbsp;(2)</option>
+	<option value="http://crowdresearch.org/blog/?m=201208"> August 2012 &nbsp;(8)</option>
+	<option value="http://crowdresearch.org/blog/?m=201207"> July 2012 &nbsp;(2)</option>
+	<option value="http://crowdresearch.org/blog/?m=201204"> April 2012 &nbsp;(7)</option>
+	<option value="http://crowdresearch.org/blog/?m=201203"> March 2012 &nbsp;(11)</option>
+	<option value="http://crowdresearch.org/blog/?m=201202"> February 2012 &nbsp;(23)</option>
+	<option value="http://crowdresearch.org/blog/?m=201201"> January 2012 &nbsp;(12)</option>
+	<option value="http://crowdresearch.org/blog/?m=201112"> December 2011 &nbsp;(1)</option>
+	<option value="http://crowdresearch.org/blog/?m=201111"> November 2011 &nbsp;(7)</option>
+	<option value="http://crowdresearch.org/blog/?m=201110"> October 2011 &nbsp;(7)</option>
+	<option value="http://crowdresearch.org/blog/?m=201109"> September 2011 &nbsp;(4)</option>
+	<option value="http://crowdresearch.org/blog/?m=201108"> August 2011 &nbsp;(9)</option>
+	<option value="http://crowdresearch.org/blog/?m=201107"> July 2011 &nbsp;(18)</option>
+	<option value="http://crowdresearch.org/blog/?m=201106"> June 2011 &nbsp;(10)</option>
+	<option value="http://crowdresearch.org/blog/?m=201105"> May 2011 &nbsp;(3)</option>
+	<option value="http://crowdresearch.org/blog/?m=201104"> April 2011 &nbsp;(15)</option>
+	<option value="http://crowdresearch.org/blog/?m=201103"> March 2011 &nbsp;(16)</option>
+	<option value="http://crowdresearch.org/blog/?m=201102"> February 2011 &nbsp;(1)</option>
+ </select>
+</aside>		<aside id="recent-posts-2" class="widget widget_recent_entries">		<h3 class="widget-title">recent posts</h3>		<ul>
+					<li>
+				<a href="http://crowdresearch.org/blog/?p=5177" title="Mechanical Turk Workers Are Not Anonymous">Mechanical Turk Workers Are Not Anonymous</a>
+						</li>
+					<li>
+				<a href="./CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd_files/CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd.html" title="CrowdCamp Report: DesignOracle: Exploring a Creative Design Space with a Crowd of Non-Experts">CrowdCamp Report: DesignOracle: Exploring a Creative Design Space with a Crowd of Non-Experts</a>
+						</li>
+					<li>
+				<a href="http://crowdresearch.org/blog/?p=5175" title="CrowdCamp Report: Remixing *Abstract* Creative Elements">CrowdCamp Report: Remixing *Abstract* Creative Elements</a>
+						</li>
+					<li>
+				<a href="http://crowdresearch.org/blog/?p=5155" title="AutoMan: Programming with People">AutoMan: Programming with People</a>
+						</li>
+					<li>
+				<a href="http://crowdresearch.org/blog/?p=5121" title="Crowd Competes against Crowd to Produce Quality Design">Crowd Competes against Crowd to Produce Quality Design</a>
+						</li>
+				</ul>
+		</aside><aside id="recent-comments-2" class="widget widget_recent_comments"><h3 class="widget-title">recent comments</h3><ul id="recentcomments"><li class="recentcomments"><a href="http://sanjaykairam.com/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-commentauthor&#39;,&#39;http://sanjaykairam.com&#39;]);" rel="external nofollow" class="url">Sanjay Kairam</a> on <a href="http://crowdresearch.org/blog/?p=5177#comment-12380">Mechanical Turk Workers Are Not Anonymous</a></li><li class="recentcomments">A Turker on <a href="http://crowdresearch.org/blog/?p=5177#comment-12378">Mechanical Turk Workers Are Not Anonymous</a></li><li class="recentcomments"><a href="http://www.mit.edu/~rcm/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-commentauthor&#39;,&#39;http://www.mit.edu&#39;]);" rel="external nofollow" class="url">Rob Miller</a> on <a href="http://crowdresearch.org/blog/?p=5175#comment-12189">CrowdCamp Report: Remixing *Abstract* Creative Elements</a></li><li class="recentcomments"><a href="http://hmslydia.com/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-commentauthor&#39;,&#39;http://hmslydia.com&#39;]);" rel="external nofollow" class="url">hmslydia</a> on <a href="http://crowdresearch.org/blog/?p=5175#comment-12036">CrowdCamp Report: Remixing *Abstract* Creative Elements</a></li><li class="recentcomments"><a href="http://www.mit.edu/~rcm/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-commentauthor&#39;,&#39;http://www.mit.edu&#39;]);" rel="external nofollow" class="url">Rob Miller</a> on <a href="http://crowdresearch.org/blog/?p=5175#comment-11997">CrowdCamp Report: Remixing *Abstract* Creative Elements</a></li></ul></aside>		</div><!-- #secondary .widget-area -->
+
+	</div><!-- #main -->
+
+	<footer id="colophon" role="contentinfo">
+
+			
+
+			<div id="site-generator">
+								<a href="http://wordpress.org/" title="Semantic Personal Publishing Platform">Proudly powered by WordPress</a>
+			</div>
+	</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<p style="text-align:center;font-size:x-small;color:#808080;"><a style="font-weight:normal;color:#808080" href="http://www.ab-weblog.com/en/wordpress-plug-ins/social-widgets/" title="Facebook, Twitter &amp; Google+ Social Widgets" target="_blank">Social Widgets</a> powered by <a style="font-weight:normal;color:#808080" href="http://www.ab-weblog.com/en/" title="Software Developer Blog" target="_blank">AB-WebLog.com</a>.</p><script type="text/javascript" src="./CrowdCamp Report  DesignOracle  Exploring a Creative Design Space with a Crowd of Non-Experts   Follow the Crowd_files/admin-bar.min.js"></script>
+		<div id="wpadminbar" class="" role="navigation">
+			<a class="screen-reader-shortcut" href="http://crowdresearch.org/blog/?p=5250#wp-toolbar" tabindex="1">Skip to toolbar</a>
+			<div class="quicklinks" id="wp-toolbar" role="navigation" aria-label="Top navigation toolbar." tabindex="0">
+				<ul id="wp-admin-bar-root-default" class="ab-top-menu">
+		<li id="wp-admin-bar-wp-logo" class="menupop"><a class="ab-item" aria-haspopup="true" href="http://crowdresearch.org/blog/wp-admin/about.php" title="About WordPress"><span class="ab-icon"></span></a><div class="ab-sub-wrapper"><ul id="wp-admin-bar-wp-logo-default" class="ab-submenu">
+		<li id="wp-admin-bar-about"><a class="ab-item" href="http://crowdresearch.org/blog/wp-admin/about.php">About WordPress</a>		</li></ul><ul id="wp-admin-bar-wp-logo-external" class="ab-sub-secondary ab-submenu">
+		<li id="wp-admin-bar-wporg"><a class="ab-item" href="http://wordpress.org/">WordPress.org</a>		</li>
+		<li id="wp-admin-bar-documentation"><a class="ab-item" href="http://codex.wordpress.org/">Documentation</a>		</li>
+		<li id="wp-admin-bar-support-forums"><a class="ab-item" href="http://wordpress.org/support/">Support Forums</a>		</li>
+		<li id="wp-admin-bar-feedback"><a class="ab-item" href="http://wordpress.org/support/forum/requests-and-feedback">Feedback</a>		</li></ul></div>		</li>
+		<li id="wp-admin-bar-site-name" class="menupop"><a class="ab-item" aria-haspopup="true" href="http://crowdresearch.org/blog/wp-admin/">Follow the Crowd</a><div class="ab-sub-wrapper"><ul id="wp-admin-bar-site-name-default" class="ab-submenu">
+		<li id="wp-admin-bar-dashboard"><a class="ab-item" href="http://crowdresearch.org/blog/wp-admin/">Dashboard</a>		</li></ul><ul id="wp-admin-bar-appearance" class="ab-submenu">
+		<li id="wp-admin-bar-theme_options"><a class="ab-item" href="http://crowdresearch.org/blog/wp-admin/themes.php?page=theme_options">Theme Options</a>		</li>
+		<li id="wp-admin-bar-theme_extensions"><a class="ab-item" href="http://crowdresearch.org/blog/wp-admin/themes.php?page=moztheme2011">Theme Extensions</a>		</li></ul></div>		</li>
+		<li id="wp-admin-bar-comments"><a class="ab-item" href="http://crowdresearch.org/blog/wp-admin/edit-comments.php" title="0 comments awaiting moderation"><span class="ab-icon"></span><span id="ab-awaiting-mod" class="ab-label awaiting-mod pending-count count-0">0</span></a>		</li>
+		<li id="wp-admin-bar-new-content" class="menupop"><a class="ab-item" aria-haspopup="true" href="http://crowdresearch.org/blog/wp-admin/post-new.php" title="Add New"><span class="ab-icon"></span><span class="ab-label">New</span></a><div class="ab-sub-wrapper"><ul id="wp-admin-bar-new-content-default" class="ab-submenu">
+		<li id="wp-admin-bar-new-post"><a class="ab-item" href="http://crowdresearch.org/blog/wp-admin/post-new.php">Post</a>		</li>
+		<li id="wp-admin-bar-new-media"><a class="ab-item" href="http://crowdresearch.org/blog/wp-admin/media-new.php">Media</a>		</li></ul></div>		</li>
+		<li id="wp-admin-bar-edit"><a class="ab-item" href="http://crowdresearch.org/blog/wp-admin/post.php?post=5250&action=edit">Edit Post</a>		</li></ul><ul id="wp-admin-bar-top-secondary" class="ab-top-secondary ab-top-menu">
+		<li id="wp-admin-bar-search" class="admin-bar-search"><div class="ab-item ab-empty-item" tabindex="-1"><form action="http://crowdresearch.org/blog/" method="get" id="adminbarsearch"><input class="adminbar-input" name="s" id="adminbar-search" type="text" value="" maxlength="150"><input type="submit" class="adminbar-button" value="Search"></form></div>		</li>
+		<li id="wp-admin-bar-my-account" class="menupop"><a class="ab-item" aria-haspopup="true" href="http://crowdresearch.org/blog/wp-admin/profile.php" title="My Account">Howdy, yotam</a><div class="ab-sub-wrapper"><ul id="wp-admin-bar-user-actions" class="ab-submenu">
+		<li id="wp-admin-bar-user-info"><a class="ab-item" tabindex="-1" href="http://crowdresearch.org/blog/wp-admin/profile.php"><span class="display-name">yotam</span></a>		</li>
+		<li id="wp-admin-bar-edit-profile"><a class="ab-item" href="http://crowdresearch.org/blog/wp-admin/profile.php">Edit My Profile</a>		</li>
+		<li id="wp-admin-bar-logout"><a class="ab-item" href="http://crowdresearch.org/blog/wp-login.php?action=logout&_wpnonce=8baf6e2c40">Log Out</a>		</li></ul></div>		</li></ul>			</div>
+			<a class="screen-reader-shortcut" href="http://crowdresearch.org/blog/wp-login.php?action=logout&_wpnonce=8baf6e2c40">Log Out</a>
+		</div>
+
+		
+
+
+<!-- Dynamic page generated in 0.547 seconds. -->
+<!-- File not cached! Super Cache Couldn't write to: wp-content/cache/wp-cache-f1ce598e43712a11d991e12bc5ed0bb6.html --></body><style type="text/css"></style></html>
