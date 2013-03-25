@@ -7,7 +7,7 @@ def pretty_print_ascii( questions, important = frozenset(), feedback = '', autho
     print 'Author:', author
     
     for i, q_and_a in enumerate( questions['questions'] ):
-        print '%s %d. %s %s' % ( ('*' if i in imp else ' '), i, q_and_a['q'], q_and_a['a'] )
+        print '%s %d. %s %s' % ( ('*' if i in imp else ' '), i, q_and_a['q'], "Yes" if q_and_a['a'] else "No" )
     
     print '  I reached the end.'
     print 'Feedback:', feedback
