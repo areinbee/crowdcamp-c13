@@ -1,0 +1,47 @@
+body {
+  font-family: Verdana, Helvetica, sans-serif;
+  background-color: #ffffff;
+
+}
+
+h1 {
+    font-size: 100%;
+    margin-bottom: 3px;
+    margin-left: 5px;
+}
+
+h2 {
+    font-size: 100%;
+    margin-left: 15px;
+}
+
+.yes {
+    color: green;
+}
+.no {
+    color: red;
+}
+
+.key {
+    font-family: courier, monospace;
+    color: #000099;
+}
+
+div.irb
+{
+    font-size: 10px;
+    font-family: verdana, sans-serif;
+    background: #ffe;
+    width: 500px;
+}
+div.irb a
+{
+    color: #000;
+}
+div.irb p
+{
+    padding-top: 3px;
+    margin-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}

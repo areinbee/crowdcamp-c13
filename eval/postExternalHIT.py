@@ -4,33 +4,42 @@ from boto.mturk.qualification import Qualifications, PercentAssignmentsApprovedR
 
 # assumes that you have your .boto file set up in your home directory with values of
 # question_form_answer and aws_secret_access_key specified
+
+# SET THESE VARIABLES
+runInSandbox = True
+totalNumberOfAssignments = 4
+urlOfEvalScript = "http://kgajos.eecs.harvard.edu:8888/crowdcamp-c13/eval/eval.php"
+
+
+
+
+SANDBOX_HOST = 'mechanicalturk.sandbox.amazonaws.com'
+mtc = MTurkConnection(host=SANDBOX_HOST)
+
+if not runInSandbox:
+    mtc = MTurkConnection()
+    urlOfEvalScript += "?destination=production"
  
- 
-HOST = 'mechanicalturk.sandbox.amazonaws.com'
- 
-mtc = MTurkConnection(host=HOST)
-#mtc = MTurkConnection()
- 
-title = 'Help us design a mobile application to transform how people\'s experience with food'
-description = ('In this HIT you will help us explore ideas for how mobile technology might transform our food experience.')
-keywords = 'design,creativity,food,idea'
+title = 'Help us evaluate creative stories'
+description = 'In this HIT you will be shown a short story and asked to evaluate it.'
+keywords = 'creativity,stories'
 
 # Set qualifications
 qualifications = Qualifications()
-qualifications.add(PercentAssignmentsApprovedRequirement(comparator="GreaterThan", integer_value="95"))
-qualifications.add(NumberHitsApprovedRequirement(comparator="GreaterThan", integer_value="500"))
-qualifications.add(LocaleRequirement('EqualTo', 'US'))
+if not runInSandbox:
+    qualifications.add(PercentAssignmentsApprovedRequirement(comparator="GreaterThan", integer_value="95"))
+    qualifications.add(NumberHitsApprovedRequirement(comparator="GreaterThan", integer_value="500"))
+    qualifications.add(LocaleRequirement('EqualTo', 'US'))
  
 #---------------  BUILD QUESTION 1 -------------------
  
-q1 = ExternalQuestion("http://kgajos.eecs.harvard.edu/crowdcamp/eval/eval.php", 600)
- 
+q1 = ExternalQuestion(urlOfEvalScript, 600)
  
 
 #--------------- CREATE THE HIT -------------------
  
 mtc.create_hit(question=q1,
-               max_assignments=4,
+               max_assignments=totalNumberOfAssignments,
                title=title,
                description=description,
                keywords=keywords,
