@@ -24,8 +24,8 @@ class ExternalHit:
 # question_form_answer and aws_secret_access_key specified
 
 # SET THESE VARIABLES
-runInSandbox = True
-totalNumberOfAssignments = 4
+runInSandbox = False
+totalNumberOfAssignments = 4*8
 urlOfEvalScript = "http://kgajos.eecs.harvard.edu:8888/crowdcamp-c13/eval/eval.php"
 
 
