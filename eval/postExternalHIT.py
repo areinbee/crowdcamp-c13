@@ -1,6 +1,24 @@
 from boto.mturk.connection import MTurkConnection
 from boto.mturk.question import QuestionContent,Question,ExternalQuestion,QuestionForm,Overview,AnswerSpecification,SelectionAnswer,FormattedContent,FreeTextAnswer
 from boto.mturk.qualification import Qualifications, PercentAssignmentsApprovedRequirement, NumberHitsApprovedRequirement, LocaleRequirement
+from sys import argv  
+import json
+
+# ------- class HIT --------
+# TODO: Make it possible to download HIT specification from json file
+class ExternalHit:
+  def __init__(self, hitSpecFile=None):
+    if hitSpecFile is not None:
+      self.spec = json.loads(open(hitSpecFile).read())
+
+  def getQuestion(self):
+    spec = self.spec
+    return ExternalQuestion(spec['url'],
+                            spec['frameHeight']) 
+
+  def getQualification(self):
+    pass
+
 
 # assumes that you have your .boto file set up in your home directory with values of
 # question_form_answer and aws_secret_access_key specified
@@ -46,3 +64,7 @@ mtc.create_hit(question=q1,
                duration = 60*60,
                qualifications=qualifications,
                reward=0.5)
+
+
+if __name__ == '__main__':
+  pass
