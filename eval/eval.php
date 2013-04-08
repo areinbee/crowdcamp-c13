@@ -104,8 +104,8 @@ foreach($itemsToEval as $itemID => $item) {
     <!-- <?php echo "item: " . $fname ?><br/> -->
     
     <h1>Evaluate this story concept</h1>
-    <p>Read the story summary below.  
-      It is presented in the form of yes/no questions.  Try to imagine what the complete story would look like.
+    <p>Read the story summary below.  It is just a short sketch.
+      <!-- It is presented in the form of yes/no questions.-->  Try to imagine what the complete story would look like.
       Tell us how much potential it has.</p>
     
     <div class="well">

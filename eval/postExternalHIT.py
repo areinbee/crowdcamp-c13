@@ -6,8 +6,8 @@ from boto.mturk.qualification import Qualifications, PercentAssignmentsApprovedR
 # question_form_answer and aws_secret_access_key specified
 
 # SET THESE VARIABLES
-runInSandbox = True
-totalNumberOfAssignments = 4
+runInSandbox = False
+totalNumberOfAssignments = 4*8
 urlOfEvalScript = "http://kgajos.eecs.harvard.edu:8888/crowdcamp-c13/eval/eval.php"
 
 
@@ -45,4 +45,4 @@ mtc.create_hit(question=q1,
                keywords=keywords,
                duration = 60*60,
                qualifications=qualifications,
-               reward=0.5)
+               reward=0.25)
