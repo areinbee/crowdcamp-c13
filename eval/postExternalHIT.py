@@ -63,7 +63,7 @@ mtc.create_hit(question=q1,
                keywords=keywords,
                duration = 60*60,
                qualifications=qualifications,
-               reward=0.5)
+               reward=0.25)
 
 
 if __name__ == '__main__':
