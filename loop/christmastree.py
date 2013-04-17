@@ -47,7 +47,8 @@ def create_and_save_initial_state( params, out_dir ):
     state_path = os.path.join( out_dir, kStateFilename )
     
     import json, copy
-    state = copy.deepcopy( params )
+    state['params'] = copy.deepcopy( params )
+    state['version'] = state['params']['version']
     '''
     state['iterations'] is a list of dictionaries containing the
     information for the iteration.
@@ -103,7 +104,7 @@ def step_state( state ):
             
             iter = state['iterations'][-1]
             
-            truncated_stories = truncate_and_flip_stories_for_iteration_N_of_M( iter['stories'], len( state['iterations'] ), state['max_iterations'] )
+            truncated_stories = truncate_and_flip_stories_for_iteration_N_of_M( iter['stories'], len( state['iterations'] ), state['params']['max_iterations'] )
             state['iterations'].append( {
                 'continuing_stories': truncated_stories
                 } )
@@ -118,11 +119,11 @@ def step_state( state ):
         assert 'continuing_stories' in state['iterations'][-1]
         
         iter = state['iterations'][-1]
-        HITIds = create_HITs_for_continuing_stories( iter['continuing_stories'] )
+        HITIds = create_HITs_for_continuing_stories( iter['continuing_stories'], state['params']['num_continuing'] )
         
         state['iterations'].append( {
-            'stories_HITIds': create_HIT_for_generating_N_initial_stories( state['num_initial'] ),
-            'stories_count': state['num_initial']
+            'stories_HITIds': HITIds,
+            'stories_count': state['params']['num_continuing']
             } )
         state['PC'] = 'wait_for_stories'
         return
@@ -132,8 +133,8 @@ def step_state( state ):
         ### 2 Move into 'wait_for_stories' state.
         assert len( state['iterations'] ) == 0
         state['iterations'].append( {
-            'stories_HITIds': [ create_HIT_for_generating_N_initial_stories( state['num_initial'] ) ],
-            'stories_count': state['num_initial']
+            'stories_HITIds': [ create_HIT_for_generating_N_initial_stories( state['params']['num_initial'] ) ],
+            'stories_count': state['params']['num_initial']
             } )
         state['PC'] = 'wait_for_stories'
         return
@@ -166,9 +167,9 @@ def step_state( state ):
                 evaluations = get_evaluations( HITId )
                 iter['evaluations'][i] = evaluations
             
-            print 'Got %d/%d evaluations.' % ( len( evaluations ), state['evaluation_params']['num_evaluations_per_story'] )
+            print 'Got %d/%d evaluations.' % ( len( evaluations ), state['params']['evaluation_params']['num_evaluations_per_story'] )
             
-            if len( iter['evaluations'][i] ) < state['evaluation_params']['num_evaluations_per_story']:
+            if len( iter['evaluations'][i] ) < state['params']['evaluation_params']['num_evaluations_per_story']:
                 missing = True
         
         if missing:
@@ -187,7 +188,7 @@ def step_state( state ):
         
         iter = state['iterations'][-1]
         
-        HITIds = publish_evaluations( iter['stories'], state['evaluation_params'] )
+        HITIds = publish_evaluations( iter['stories'], state['params']['evaluation_params'] )
         iter['evaluations_HITIds'] = HITIds
         
         state['PC'] = 'wait_for_evaluations'
@@ -205,13 +206,13 @@ def step_state( state ):
         
         missing = False
         for i, HITId in enumerate( HITIds ):
-            if len( iter['evaluations'][i] ) < state['evaluation_params']['num_evaluations_per_story']:
+            if len( iter['evaluations'][i] ) < state['params']['evaluation_params']['num_evaluations_per_story']:
                 evaluations = get_evaluations( HITId )
                 iter['evaluations'][i] = evaluations
             
-            print 'Got %d/%d evaluations.' % ( len( evaluations ), state['evaluation_params']['num_evaluations_per_story'] )
+            print 'Got %d/%d evaluations.' % ( len( evaluations ), state['params']['evaluation_params']['num_evaluations_per_story'] )
             
-            if len( iter['evaluations'][i] ) < state['evaluation_params']['num_evaluations_per_story']:
+            if len( iter['evaluations'][i] ) < state['params']['evaluation_params']['num_evaluations_per_story']:
                 missing = True
         
         if missing:
@@ -226,14 +227,14 @@ def step_state( state ):
         ### 1 Create the HIT for evaluating the stories.
         ### 2 Move into 'wait_for_evaluations' state.
         assert len( state['iterations'] ) > 0
-        assert len( state['iterations'][-1]['evaluations'] ) == state['evaluation_params']['num_evaluations_per_story']
+        assert len( state['iterations'][-1]['evaluations'] ) == state['params']['evaluation_params']['num_evaluations_per_story']
         
         iter = state['iterations'][-1]
         
-        best_stories = keep_N_best_stories( iter['stories'], iter['evaluations'], state['keep_N_best_stories'] )
+        best_stories = keep_N_best_stories( iter['stories'], iter['evaluations'], state['params']['keep_N_best_stories'] )
         iter['continuing_stories'] = best_stories
         
-        if len( state['iterations'] ) == state['max_iterations']:
+        if len( state['iterations'] ) == state['params']['max_iterations']:
             state['PC'] = None
             return
         else:
@@ -243,7 +244,7 @@ def step_state( state ):
     elif state['PC'] == 'prepare_to_generate_stories':
         
     
-        HITIds = publish_evaluations( iter['stories'], state['evaluation_params'] )
+        HITIds = publish_evaluations( iter['stories'], state['params']['evaluation_params'] )
         iter['evaluations_HITIds'] = HITIds
         
         state['PC'] = 'wait_for_evaluations'
