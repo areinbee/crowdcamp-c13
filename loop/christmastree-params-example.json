@@ -1,0 +1,11 @@
+{
+    'version': 1,
+    'max_iterations': 3,
+    'num_initial_stories': 50
+    'num_continuing_stories': 10,
+    'keep_N_best_stories': 5,
+    'evaluation_parameters': {
+        'num_evaluations_per_story': 10,
+        ...
+        }
+}
