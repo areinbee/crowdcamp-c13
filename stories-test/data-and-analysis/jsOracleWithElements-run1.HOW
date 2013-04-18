@@ -1,0 +1,27 @@
+## Step 0
+ln -s ../../ext/mturk-py/mturk.py
+
+MTURKPY="./mturk.py really"
+#MTURKPY=./mturk.py
+BASEDIR=jsOracleWithElements-run1
+
+## After it's been submitted:
+HITID=$(grep create_hit "${BASEDIR}/submit.txt" | sed -E 's/.*: ([A-Z0-9]*)\]/\1/')
+
+## Submit
+${MTURKPY} submit "${BASEDIR}/mturk.json" | tee "${BASEDIR}/submit.txt"
+
+## Info
+${MTURKPY} info "${HITID}" | tee "${BASEDIR}/info.txt"
+
+## Check for Mechanical Turk jobs by my Requester ID:
+https://workersandbox.mturk.com/mturk/searchbar?selectedSearchType=hitgroups&requesterId=A1Z6ANVZ53BG1X
+https://www.mturk.com/mturk/searchbar?selectedSearchType=hitgroups&requesterId=A1Z6ANVZ53BG1X
+
+## Retrieve
+${MTURKPY} retrieve "${HITID}" | head -2 | tee "${BASEDIR}/results.csv.meta"
+${MTURKPY} retrieve "${HITID}" | tail -n +3 > "${BASEDIR}/results.csv"
+./csv_helpers.py "${BASEDIR}/results.csv" payload > "${BASEDIR}/results-payload.json"
+
+### Analyze ###
+
