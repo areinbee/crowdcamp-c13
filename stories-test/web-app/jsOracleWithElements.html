@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)http://hcomp.yotamgingold.com/questions2fromexisting/questions4.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    <title>Guess my story.</title>
+    
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script> -->
+    <script src="./yotamsOracle_files/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="./yotamsOracle_files/purl.js" type="text/javascript"></script>
+    
+    <script src="./yotamsOracle_files/AleaMash.js" type="text/javascript"></script>
+    
+<style type="text/css">
+body
+{
+    font-family: verdana, sans-serif;
+}
+
+.yes
+{
+    color: #0a0;
+}
+.no
+{
+    color: #a00;
+}
+#category
+{
+    font-weight: bold;
+    color: #1944B9;
+}
+.checkmark-instructions
+{
+    font-weight: bold;
+}
+.feedback-instructions
+{
+    font-size: 80%;
+    color: #555;
+}
+
+#story-area
+{
+    border: 1px solid #000;
+    margin: 25px 0 5px 0;
+    padding: 5px;
+}
+.floating-label
+{
+    position: relative;
+    top: -20px;
+    left: 10px;
+    /* font-size: 20px; */
+    height: 20px;
+    line-height: 20px;
+    /* text-align: center; */
+    /* width: 100px; */
+    float: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: -20px;
+    
+    background: #fff;
+    border: 1px solid #000;
+}
+.clearfix
+{
+    clear: both;
+    visibility: hidden;
+    height: 0;
+}
+#history
+{
+    line-height: 1.5em;
+}
+#history input
+{
+    display: none;
+}
+
+#question
+{
+    width: 80%;
+}
+
+#feedback-area
+{
+    display: none;
+    line-height: 150%;
+}
+#feedback
+{
+    width: 80%;
+    height: 5em;
+}
+
+div.irb
+{
+    font-size: 10px;
+    font-family: verdana, sans-serif;
+    background: #ffe;
+    width: 500px;
+    
+    display: none;
+}
+div.irb a
+{
+    color: #000;
+}
+div.irb p
+{
+    padding-top: 3px;
+    margin-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+div.nonirb
+{
+    position: relative;
+}
+</style>
+
+</head>
+<body>
+
+<div class="irb">
+<p>Designing Micro-Tasks for Computer Graphics Applications and Crowdsourced Creativity
+
+</p><p>INFORMED CONSENT FORM
+
+</p><p>RESEARCH PROCEDURES:
+This research is being conducted to design micro-tasks for computer graphics applications and study crowdsourced creativity. If you agree to participate, you will be asked to complete the HIT shown below.
+
+</p><p>RISKS:
+There are no foreseeable risks for participating in this research.
+
+</p><p>BENEFITS:
+There are no benefits to you as a participant other than to further research in computer graphics.
+
+</p><p>CONFIDENTIALITY:
+This research is anonymous. (1) Your name will not be included on the surveys and other collected data; (2) a code unrelated to your Worker ID will be placed on the survey and other collected data; (3) through the use of an identification key, the researcher will be able to link your survey to your Amazon Worker ID; and (4) only the researcher will have access to the identification key.
+
+</p><p>PARTICIPATION:
+Your participation is voluntary, and you may withdraw from the study at any time and for any reason. If you decide not to participate or if you withdraw from the study, there is no penalty or loss of benefits to which you are otherwise entitled. There are no costs to you or any other party. You will be paid the advertised amount for your completion of the HITs.
+
+</p><p>CONTACT:
+This research is being conducted by Yotam Gingold from the Department of Computer Science at George Mason University. He may be reached at 703-993-9196 or <a href="mailto:ygingold@cs.gmu.edu">ygingold@cs.gmu.edu</a> for questions or to report a research-related problem. You may contact the George Mason University Office of Research Integrity &amp; Assurance at 703-993-4121 if you have questions or comments regarding your rights as a participant in the research. This research has been reviewed according to George Mason University procedures governing your participation in this research.
+
+</p><p>CONSENT:
+By accepting this HIT, you acknowledge that you have read this form and agree to participate in this study.
+If you do not agree with the consent form and wish not to participate in this study, please skip this HIT.
+</p></div>
+
+<script>
+storyElements = ["anything related to this story","resolution", "conflict", "setting"];
+</script>
+
+<div class="nonirb">
+
+<h1 class="heading">Guess my story.</h1>
+
+<p class="heading h2" id="instructions">I have created a story.  I wonder if you can guess what it’s about by asking only <strong><span class="yes">Yes</span></strong> or <strong><span class="no">No</span></strong> questions.<span id="instructions-continue" style="display:none;">  Someone already started guessing.  Please continue asking only <strong><span class="yes">Yes</span></strong> or <strong><span class="no">No</span></strong> questions.</span></p>
+
+<div id="story-area">
+    <div class="floating-label">The Story:</div>
+    <div class="clearfix"></div>
+    <div id="history"></div>
+    
+          
+    <form id="history-form" action="" onsubmit="return false;">
+    
+    <br>Try asking questions about <span id="category">characters</span>:
+    
+        <br><input type="text" id="question" name="question" value="" placeholder="Question" autofocus="">
+    <input class="enable-on-success-button" type="submit" id="ask-button" name="query_question" value="Ask">
+    </form>
+</div>
+
+<div id="form-holder">
+    <form id="mturk_form" method="post" action="http://hcomp.yotamgingold.com/questions2fromexisting/request.php">
+    <input type="hidden" id="assignmentId" name="assignmentId" value="">
+    <input type="hidden" id="UserAgent" name="UserAgent" value="Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31">
+    <input type="hidden" id="stimulus" name="stimulus" value="">
+    <input type="hidden" id="payload" name="payload" value="">
+    <input type="hidden" id="influential_questions" name="influential_questions" value="">
+    <div id="feedback-area">
+        Great, you did it!<br>
+        
+        <span class="checkmark-instructions">Please place check marks next to questions that had a big impact on later questions.</span>  Place at least <span id="kMinimumCheckMarks">2</span> check marks.<br>
+        <span class="feedback-instructions">How was this experience? Leave us feedback (optional):</span>
+        <textarea id="feedback" name="feedback" placeholder="Feedback"></textarea>
+    </div>
+    <input class="enable-on-success-button" id="submitButton" type="submit" name="Submit" value="I reached the end.">
+    </form>
+</div>
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+    (function() {
+    "use strict";
+    
+    ///
+    /// Constants.
+    ///
+    var kDebugging = false;
+    var kMinimumCheckMarks = 2;
+    var kYesThreshold = 2; //will actually allow 3 yeses until next element
+    ///
+    /// "Classes"
+    ///
+    function Story()
+    {
+        // Class instance variables.
+        this.theStory = { 'questions': [] };
+        this.goodQuestionsAsked = 0;
+        this.numberOfNoAnswersInARow = 0;
+        this.numOfYeses = 0;
+    }
+    // Class constants.
+    // NOTE: We can't allow the user to get to the "check mark" stage with too few questions to place check marks next to, or they will never be allowed to submit.
+    Story.prototype.kMinimumQuestionsToSubmit = Math.max( 1, kMinimumCheckMarks );
+    Story.prototype.kMaximumNoAnswersInARow = 2;
+    Story.prototype.kFractionYesAnswers = .6;
+    // Class methods.
+    Story.prototype.story_as_text = function()
+    {
+        return JSON.stringify( this.theStory );
+    }
+    // Appends the given question and answer to the story.
+    // The optional parameter 'options' has:
+    //   an 'incrementQuestionsAsked' field (default true) which specifies whether to increment the count of good questions.
+    //   an 'updateNumberOfNoAnswersInARow' field (default true) which specifies whether to update the number of no's in a row based on the answer.
+    Story.prototype.append_question_and_answer = function( text, answerIsYes, options )
+    {
+        // Default options.
+        if( options === undefined ) options = {};
+        if( options.incrementQuestionsAsked === undefined ) options.incrementQuestionsAsked = true;
+        if( options.updateNumberOfNoAnswersInARow === undefined ) options.updateNumberOfNoAnswersInARow = true;
+    
+        if( options.incrementQuestionsAsked )          this.goodQuestionsAsked += 1;
+    
+        // Keep track of the number of no answers in a row.
+        if( options.updateNumberOfNoAnswersInARow )
+        {
+            if( answerIsYes ) 
+            {
+                this.numberOfNoAnswersInARow = 0;
+                this.numOfYeses += 1;
+            }
+            else this.numberOfNoAnswersInARow += 1;
+        }
+        
+        var history_div = $('#history');
+        
+        var qnum = this.theStory.questions.length; //gets quest #
+        this.theStory.questions.push( { 'q': text, 'a': answerIsYes } );
+        $('#payload').val( this.story_as_text() ); 
+        
+        var kPrefix = '<input type="checkbox" id="influential' + qnum + '" name="influential" value="' + qnum + '"><label for="influential' + qnum + '">';
+        var kSuffix = '</label>';
+        
+        var answer =
+            answerIsYes
+            ? kPrefix + '<span class="yes">' + text + ' <strong>Yes!</strong></span>' + kSuffix
+            : kPrefix + '<span class="no">' + text + ' <strong>No.</strong></span>' + kSuffix
+            ;
+    
+        history_div.append( $('<div></div>').append( $(answer) ) );
+    }
+    // Returns the known answer to the given question if it has been seen before, and undefined otherwise.
+    Story.prototype.answer_to_question = function( question_text )
+    {
+        question_text = $.trim(question_text).toLowerCase();
+    
+        for( var i = 0; i < this.theStory.questions.length; ++i )
+        {
+            if( $.trim( this.theStory.questions[i].q ).toLowerCase() == question_text )
+            {
+                return this.theStory.questions[i].a;
+            }
+        }
+        
+        return undefined;
+    }
+    // Returns a random answer according to the number of previously seen no's and
+    // the fraction of yes answers constant.
+    Story.prototype.generateRandomAnswer = function()
+    {
+        // If we've seen the maximum number of no's in a row, return yes.
+        if( this.numberOfNoAnswersInARow === this.kMaximumNoAnswersInARow ) {
+            return true;
+        // Otherwise, generate a random answer.
+        } else {
+            return random() < this.kFractionYesAnswers;
+        }
+    }
+    
+    
+    ///
+    /// Global variables.
+    ///
+    var assignmentId;
+    var stimulus;
+    var theStory = new Story();
+    
+    ///
+    /// Global functions.
+    ///
+    // Better randomness:
+    // var random = Math.random;
+    var random = Alea();
+    
+    function update_submit_button_following_success()
+    {
+        // Check if the worker is PREVIEWING the HIT or if they've ACCEPTED the HIT
+        var submitButton = $('#submitButton');
+        if( assignmentId === "ASSIGNMENT_ID_NOT_AVAILABLE" )
+        {
+            // If we're previewing, disable the button and give it a helpful message
+            $('.enable-on-success-button').prop( "disabled", true );
+            submitButton.val( "You must ACCEPT the HIT before you can ask any question." );
+        }
+        else
+        {
+            $('.enable-on-success-button').prop( "disabled", false );
+            // submitButton.val( "Submit" );
+        }
+        
+        // If we're not previewing the HIT, enable the tag fields.
+        // If we're not previewing the HIT, hide the IRB assent.
+        if( assignmentId === "ASSIGNMENT_ID_NOT_AVAILABLE" )
+        {
+            $('div.irb').show();
+        }
+    }
+    function update_submit_button_following_failure()
+    {
+        // Check if the worker is PREVIEWING the HIT or if they've ACCEPTED the HIT
+        var submitButton = $('#submitButton');
+        $('.enable-on-success-button').prop( "disabled", true );
+        submitButton.val( "Something has gone wrong internally.  I apologize for the inconvenience." );
+        
+        // If we're not previewing the HIT, enable the tag fields.
+        // If we're not previewing the HIT, hide the IRB assent.
+        if( assignmentId !== "ASSIGNMENT_ID_NOT_AVAILABLE" )
+        {
+            $('div.irb').hide();
+        }
+    }
+    
+    
+    ///
+    /// Initialization.
+    ///
+    
+    $(document).ready( function() {
+    
+    if( kDebugging ) $(".debug-container").show();
+    
+    //
+    // From the Jquery plugin - http://projects.allmarkedup.com/jquery_url_parser/
+    //
+    assignmentId = purl().param("assignmentId");
+    $('#assignmentId').val( assignmentId );
+    
+    // Tested: The sandbox and the non-sandbox Mechanical Turk both
+    // provide a "turkSubmitTo" parameter when a HIT has been "accepted".
+    // They do not provide a "turkSubmitTo" in preview mode, though.
+    var submitTo = purl().param('turkSubmitTo');
+    if( submitTo !== undefined )
+    {
+        submitTo = decodeURIComponent( submitTo );
+        $('#mturk_form').prop( 'action', submitTo + '/mturk/externalSubmit' );
+    }
+    
+    // Let's store the UserAgent for analyzing later (so we know what level of browser adoption we can expect).
+    $( "#UserAgent" ).val( navigator.userAgent ); //what browser they're using
+    
+    
+    $('#submitButton').val( "I reached the end." );
+    
+    $('#kMinimumCheckMarks').text( kMinimumCheckMarks );
+    
+    stimulus = purl().param("stimulus");
+    if( stimulus !== undefined )
+    {
+        $('#instructions-continue').show();
+        
+        $('#stimulus').val( stimulus );
+        $.getJSON(
+            'json/' + stimulus,
+            function( data )
+            {
+                for( var i = 0; i < data.questions.length; ++i )
+                {
+                    theStory.append_question_and_answer( data.questions[i].q, data.questions[i].a, { 'incrementQuestionsAsked': false } );
+                }
+                
+                update_submit_button_following_success();
+            }
+            );
+    }
+    else
+    {
+        update_submit_button_following_success();
+    }
+    
+    
+    
+    $('#ask-button').click( function() { //in the form that doesnt get submitted
+        
+        var q = $('#question');
+                
+        var answer;
+        var ele;
+        
+        //test the yes threshold
+        if(storyElements.length >= 1 && this.numOfYeses===kYesThreshold ) 
+        {
+            ele = storyElements.pop();
+            document.getElementById('category').innerHTML=ele;
+            
+            //history_div.append( $('<div></div>').append( $('<span>' + ele + ' </span>') ) );
+            this.numOfYeses = 0;
+                  
+        }
+               
+        
+        
+        // Get the question and clear the form field.
+        var text = q.val();
+        q.val('');
+        
+        // Clean up the question and check if it's valid.
+        text = $.trim(text);
+        
+        // Ignore blank questions.
+        if( text === '' ) return;
+                
+        // Warn the user if they type simply "yes" or "no".
+        if( text.toLowerCase() === "yes" || text.toLowerCase() === "yes?" || text.toLowerCase() === "no" || text.toLowerCase() === "no?" )
+        {
+            alert( 'Please ask questions that can be answered with "yes" or "no".' );
+            return;
+        }
+        
+        // Check for a known answer.
+        var answerIsYes = theStory.answer_to_question( text );
+        // If there is no known answer, generate a random answer.
+        if( answerIsYes === undefined ) answerIsYes = theStory.generateRandomAnswer();
+        
+        // Append the question and answer.
+        theStory.append_question_and_answer( text, answerIsYes );
+        } );
+    
+    $('#mturk_form').on( 'submit', function() {
+        if( theStory.goodQuestionsAsked < theStory.kMinimumQuestionsToSubmit )
+        {
+            alert( "Are you sure you've reached the end?" ); //only OK button, rephrase?
+            $('#question').focus();
+            return false;
+        }
+        
+        // Remove this function from the form and prepare the next one.
+        $('#mturk_form').off( 'submit' );
+        
+        // Prepare the DOM that asks users to check off the most important questions.
+        $('#history-form').hide();
+        
+        // TODO: Create a bunch of check buttons.
+        $('#history input').prop( 'checked', false ); /*unchecks everything acceidentally checked*/
+        $('#history input').change( function() { 
+            var checked = $('#history input:checked'); /*get all elements inside ID history that are inputs that are checked*/
+            $('#submitButton').prop( 'disabled', checked.length < kMinimumCheckMarks ); //clicked enough
+            
+            var ids = []; //collect all IDs
+            checked.each( function() { ids.push( parseInt( this.id.replace( 'influential', '' ) ) ) } );
+            
+            $('#influential_questions').val( JSON.stringify( ids ) );
+            } );
+        $('#history input').show(); //show the checkboxes
+        
+        // Show the feedback area.
+        $('#feedback-area').show();
+        $('#feedback').focus();
+        
+        // The submit button actually submits.
+        $('#submitButton').val( 'Submit' );
+        $('#submitButton').prop( 'disabled', true );
+        
+        // We don't need a next form submit handler; we're ready to submit.
+        // $('#mturk_form').on( 'submit', function() { return true; } );
+        
+        // We setup the next stage, so don't actually submit.
+        return false;
+        } );
+    
+    });
+    })();
+    /*]]>*/
+</script>
+
+
+</div></body></html>
